@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Dex } from '@pkmn/dex';
-import { calculate, Pokemon, Move } from '@smogon/calc';
+import { calculate, Pokemon, Move, Field } from '@smogon/calc';
 
 import { PokemonConfig } from './types';
 import { defaultP1, defaultP2 } from './constants';
@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [p1Learnset, setP1Learnset] = useState<string[]>([]);
   const [moveFilter, setMoveFilter] = useState('');
   const [activeTab, setActiveTab] = useState<'calc' | 'types'>('calc');
+  const [isDoubles, setIsDoubles] = useState(true);
 
   useEffect(() => {
     let active = true;
@@ -75,6 +76,8 @@ const App: React.FC = () => {
 
       const p2Types = Dex.species.get(p2Config.species)?.types || [];
 
+      const field = new Field({ gameType: isDoubles ? 'Doubles' : 'Singles' });
+
       const results = p1Learnset.map(moveName => {
         try {
           const pkmnMove = Dex.moves.get(moveName);
@@ -109,7 +112,7 @@ const App: React.FC = () => {
             };
           }
 
-          const result = calculate(9, p1, p2, move);
+          const result = calculate(9, p1, p2, move, field);
           
           let maxDamage = 0;
           try {
@@ -160,7 +163,7 @@ const App: React.FC = () => {
     } catch (e) {
       return [];
     }
-  }, [p1Config, p2Config, p1Learnset]);
+  }, [p1Config, p2Config, p1Learnset, isDoubles]);
 
 
   const displayedResults = moveFilter 
@@ -176,6 +179,9 @@ const App: React.FC = () => {
       <div className="tabs-container">
         <button className={`tab-btn ${activeTab === 'calc' ? 'active' : ''}`} onClick={() => setActiveTab('calc')}>Damage Calculator</button>
         <button className={`tab-btn ${activeTab === 'types' ? 'active' : ''}`} onClick={() => setActiveTab('types')}>Type Chart</button>
+        <label style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold' }}>
+          <input type="checkbox" checked={isDoubles} onChange={e => setIsDoubles(e.target.checked)} /> Doubles
+        </label>
       </div>
 
       {activeTab === 'calc' && (
