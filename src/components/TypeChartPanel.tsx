@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dex } from '@pkmn/dex';
+import { TypeGrid } from './TypeGrid';
 import { allSpecies, allTypes } from '../data';
 
 export const TypeChartPanel = () => {
@@ -121,6 +122,7 @@ export const TypeChartPanel = () => {
           {effText}
         </div>
       </div>
+      <TypeGrid />
     </div>
   );
 };
