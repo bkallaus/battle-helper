@@ -4,6 +4,31 @@ import { PokemonConfig } from '../types';
 import { allSpecies } from '../data';
 import { defaultEVs, defaultBoosts } from '../constants';
 
+const calculateStat = (statName: string, baseStat: number, level: number, iv: number, ev: number, boost: number) => {
+  if (baseStat === 0) return 0;
+
+  // Calculate raw stat
+  let stat = 0;
+  if (statName === 'hp') {
+      if (baseStat === 1) return 1; // Shedinja
+      stat = Math.floor(((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100) + level + 10;
+  } else {
+      stat = Math.floor(((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100) + 5;
+      // Natures aren't in PokemonConfig currently, so we assume neutral nature.
+  }
+
+  // Apply boosts
+  if (statName !== 'hp') {
+      if (boost > 0) {
+          stat = Math.floor(stat * (2 + boost) / 2);
+      } else if (boost < 0) {
+          stat = Math.floor(stat * 2 / (2 - boost));
+      }
+  }
+
+  return stat;
+};
+
 export const PokemonConfigPanel = ({ title, config, setConfig, isP2 }: { title: string, config: PokemonConfig, setConfig: any, isP2: boolean }) => {
   const speciesInfo = Dex.species.get(config.species);
   const types = speciesInfo?.types || [];
@@ -55,7 +80,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2 }: { title: 
       <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Stats (EVs / Boosts)</label>
       <div style={{ display: 'grid', gap: '0.5rem' }}>
         <div className="stats-grid-header">
-          <span style={{ textAlign: 'left' }}>STAT</span><span>BASE</span><span>EV (0-32)</span><span>BOOST (-6 to +6)</span>
+          <span style={{ textAlign: 'left' }}>STAT</span><span>BASE</span><span>EV (0-32)</span><span>BOOST (-6 to +6)</span><span>TOTAL</span>
         </div>
         {(Object.keys(config.evs) as Array<keyof typeof config.evs>).map(stat => (
           <div key={stat} className="stat-row">
@@ -86,6 +111,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2 }: { title: 
                 >-1</button>
               </div>
             ) : <div />}
+            <span className="stat-total-badge">{calculateStat(stat, (baseStats as any)[stat], config.level, config.ivs[stat], config.evs[stat], stat !== 'hp' ? config.boosts[stat] : 0)}</span>
           </div>
         ))}
       </div>
