@@ -234,9 +234,58 @@ select:focus, input:focus {
   color: var(--text-main);
 }
 
+.iv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+/* Damage Panel */
+.damage-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.damage-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.damage-item {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.damage-move-name {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.damage-desc {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
 @media (max-width: 768px) {
   body {
     padding: 0;
+  }
+  #root {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   .app-container {
     padding: 0.5rem;
@@ -280,48 +329,7 @@ select:focus, input:focus {
   .species-input-container input {
     min-width: 100% !important;
   }
-}
-
-.iv-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-}
-
-/* Damage Panel */
-.damage-panel {
-  background: var(--bg-panel);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.5rem;
-}
-
-.damage-results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1rem;
-}
-
-.damage-item {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border);
-  padding: 1rem;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  height: 100%;
-}
-
-.damage-move-name {
-  font-weight: bold;
-  color: var(--accent);
-}
-
-.damage-desc {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.9rem;
-  color: var(--text-muted);
+  .damage-results-grid {
+    grid-template-columns: 1fr;
+  }
 }
