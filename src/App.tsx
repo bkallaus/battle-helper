@@ -278,6 +278,8 @@ const App: React.FC = () => {
                       alignItems: 'center'
                     }}
                     title={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    aria-label={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    aria-pressed={(p1Config.moves || []).includes(result.move)}
                   >
                     {(p1Config.moves || []).includes(result.move) ? '★' : '☆'}
                   </button>
@@ -341,6 +343,8 @@ const App: React.FC = () => {
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         title="My Team"
+        aria-label="My Team"
+        aria-expanded={isTeamFabOpen}
       >
         🛡️
       </button>
@@ -352,6 +356,7 @@ const App: React.FC = () => {
             <button 
               onClick={() => setIsTeamFabOpen(false)} 
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
+              aria-label="Close Team Drawer"
             >
               ✕
             </button>
@@ -387,6 +392,7 @@ const App: React.FC = () => {
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
                       title="Remove"
+                      aria-label="Remove Team Member"
                     >
                       ✕
                     </button>
