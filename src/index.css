@@ -117,6 +117,7 @@ h2 {
   border-radius: 16px;
   padding: 24px;
   box-shadow: var(--surface-1-shadow);
+  overflow-x: hidden;
 }
 
 .builder-panel h2 {
