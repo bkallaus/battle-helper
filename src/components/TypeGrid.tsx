@@ -4,10 +4,11 @@ import { allTypes } from '../data';
 
 export const TypeGrid = () => {
   return (
-    <div style={{ marginTop: '32px', overflowX: 'auto' }}>
+    <div style={{ marginTop: '32px' }}>
       <h3 style={{ marginBottom: '16px' }}>Full Type Chart</h3>
-      <table style={{ borderCollapse: 'collapse', minWidth: 'max-content', fontSize: '12px', textAlign: 'center', margin: '0 auto' }}>
-        <thead>
+      <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+        <table style={{ borderCollapse: 'collapse', minWidth: 'max-content', fontSize: '12px', textAlign: 'center', margin: '0' }}>
+          <thead>
           <tr>
             <th style={{ padding: '8px', borderBottom: '2px solid var(--border)', borderRight: '2px solid var(--border)' }}>Atk \ Def</th>
             {allTypes.map(t => (
@@ -64,6 +65,7 @@ export const TypeGrid = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

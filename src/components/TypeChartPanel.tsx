@@ -75,17 +75,59 @@ export const TypeChartPanel = () => {
       <div className="form-group" style={{ marginBottom: '1.5rem' }}>
         <label>Defending Type(s) - Select up to 2</label>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
-          {allTypes.map(t => (
-            <button
-              type="button"
-              key={t}
-              onClick={() => handleTypeToggle(t)}
-              className={`tab-btn ${defendingTypes.includes(t) ? 'active' : ''}`}
-              style={{ border: '1px solid var(--border)', fontSize: '14px' }}
-            >
-              {t}
-            </button>
-          ))}
+          {allTypes.map(t => {
+            const isImmune = !Dex.getImmunity(attackingType, [t]);
+            const eff = Dex.getEffectiveness(attackingType, [t]);
+            const multiplier = isImmune ? 0 : Math.pow(2, eff);
+
+            let bg = 'transparent';
+            let color = 'var(--text-main)';
+            let borderColor = 'var(--border)';
+            let effBadge = '';
+
+            if (multiplier === 0) {
+              bg = 'var(--text-muted)';
+              color = 'white';
+              borderColor = 'var(--text-muted)';
+              effBadge = '0x';
+            } else if (multiplier === 0.5) {
+              bg = 'var(--hp-yellow)';
+              color = 'white';
+              borderColor = 'var(--hp-yellow)';
+              effBadge = '½x';
+            } else if (multiplier === 2) {
+              bg = 'var(--hp-green)';
+              color = 'white';
+              borderColor = 'var(--hp-green)';
+              effBadge = '2x';
+            }
+
+            const isActive = defendingTypes.includes(t);
+
+            return (
+              <button
+                type="button"
+                key={t}
+                onClick={() => handleTypeToggle(t)}
+                className={`tab-btn`}
+                style={{ 
+                  background: bg,
+                  color: color,
+                  border: `2px solid ${isActive ? '#0f1d26' : borderColor}`,
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  fontWeight: isActive ? 'bold' : 'normal',
+                  boxShadow: isActive ? '0 2px 8px rgba(0,0,0,0.15)' : 'none',
+                  transform: isActive ? 'scale(1.05)' : 'none',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {t} {effBadge && <span style={{ opacity: 0.9, fontSize: '11px', background: 'rgba(0,0,0,0.2)', padding: '2px 4px', borderRadius: '4px' }}>{effBadge}</span>}
+              </button>
+            );
+          })}
         </div>
       </div>
 
