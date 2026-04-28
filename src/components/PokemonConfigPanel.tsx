@@ -29,13 +29,13 @@ const calculateStat = (statName: string, baseStat: number, level: number, iv: nu
   return stat;
 };
 
-export const PokemonConfigPanel = ({ title, config, setConfig, isP2 }: { title: string, config: PokemonConfig, setConfig: any, isP2: boolean }) => {
+export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: { title: string, config: PokemonConfig, setConfig: any, isP2: boolean, onSave?: () => void }) => {
   const speciesInfo = Dex.species.get(config.species);
   const types = speciesInfo?.types || [];
   const baseStats = speciesInfo?.baseStats || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 
   const handleSpeciesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfig({ ...config, species: e.target.value });
+    setConfig({ ...config, species: e.target.value, moves: [] });
   };
 
   return (
@@ -49,11 +49,11 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2 }: { title: 
               list={`species-list-${isP2 ? 'p2' : 'p1'}`}
               value={config.species}
               onChange={handleSpeciesChange}
-              onFocus={() => setConfig({ ...config, species: '' })}
+              onFocus={() => setConfig({ ...config, species: '', moves: [] })}
               placeholder="Type a Pokémon..."
             />
             {config.species && (
-              <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, species: '' })} aria-label="Clear">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, species: '', moves: [] })} aria-label="Clear">✕</button>
             )}
           </div>
           <datalist id={`species-list-${isP2 ? 'p2' : 'p1'}`}>
@@ -115,14 +115,34 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2 }: { title: 
           </div>
         ))}
       </div>
-      <button
-        type="button"
-        onClick={() => setConfig({ ...config, evs: { ...defaultEVs }, boosts: { ...defaultBoosts } })}
-        className="stat-btn clr-btn"
-        style={{ width: '100%', marginTop: '16px' }}
-      >
-        Clear All Stats
-      </button>
+
+      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '16px' }}>
+        <button
+          type="button"
+          onClick={() => setConfig({ ...config, evs: { ...defaultEVs }, boosts: { ...defaultBoosts } })}
+          className="stat-btn clr-btn"
+          style={{ flex: 1 }}
+        >
+          Clear All Stats
+        </button>
+        {onSave && (
+          <button
+            type="button"
+            onClick={onSave}
+            style={{ 
+              flex: 1, 
+              backgroundColor: 'var(--accent)', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '6px', 
+              fontWeight: 'bold', 
+              cursor: 'pointer' 
+            }}
+          >
+            Save to Team
+          </button>
+        )}
+      </div>
     </div>
   );
 };

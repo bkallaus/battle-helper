@@ -10,6 +10,7 @@ export const defaultP1: PokemonConfig = {
   evs: { ...defaultEVs },
   boosts: { ...defaultBoosts },
   level: 50,
+  moves: [],
 };
 
 export const defaultP2: PokemonConfig = {
@@ -18,4 +19,5 @@ export const defaultP2: PokemonConfig = {
   evs: { ...defaultEVs },
   boosts: { ...defaultBoosts },
   level: 50,
+  moves: [],
 };

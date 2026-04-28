@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Dex } from '@pkmn/dex';
 import { calculate, Pokemon, Move } from '@smogon/calc';
 
@@ -14,6 +14,53 @@ const App: React.FC = () => {
   const [p1Learnset, setP1Learnset] = useState<string[]>([]);
   const [moveFilter, setMoveFilter] = useState('');
   const [activeTab, setActiveTab] = useState<'calc' | 'types'>('calc');
+  const [team, setTeam] = useState<PokemonConfig[]>(() => {
+    try {
+      const saved = localStorage.getItem('vgc-team');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
+  const teamDrawerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isTeamFabOpen && teamDrawerRef.current && !teamDrawerRef.current.contains(event.target as Node)) {
+        const target = event.target as Element;
+        if (!target.closest('.team-fab')) {
+          setIsTeamFabOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isTeamFabOpen]);
+
+  useEffect(() => {
+    localStorage.setItem('vgc-team', JSON.stringify(team));
+  }, [team]);
+
+  const handleSaveToTeam = () => {
+    setTeam(prev => [...prev, { ...p1Config }]);
+    setIsTeamFabOpen(true);
+  };
+
+  const toggleCoreMove = (moveName: string) => {
+    const currentMoves = [...(p1Config.moves || [])].filter(m => m);
+    const existingIndex = currentMoves.indexOf(moveName);
+    
+    if (existingIndex >= 0) {
+      currentMoves.splice(existingIndex, 1);
+    } else {
+      currentMoves.push(moveName);
+    }
+    setP1Config({ ...p1Config, moves: currentMoves });
+  };
 
   useEffect(() => {
     let active = true;
@@ -163,9 +210,18 @@ const App: React.FC = () => {
   }, [p1Config, p2Config, p1Learnset]);
 
 
-  const displayedResults = moveFilter 
-    ? damageResults.filter(r => r.move.toLowerCase().includes(moveFilter.toLowerCase()))
-    : damageResults;
+  const displayedResults = useMemo(() => {
+    const coreMoves = (p1Config.moves || []).filter(m => m);
+    
+    let coreResults = damageResults.filter(r => coreMoves.includes(r.move));
+    let otherResults = damageResults.filter(r => !coreMoves.includes(r.move));
+    
+    if (moveFilter) {
+      otherResults = otherResults.filter(r => r.move.toLowerCase().includes(moveFilter.toLowerCase()));
+    }
+    
+    return [...coreResults, ...otherResults];
+  }, [damageResults, moveFilter, p1Config.moves]);
 
   return (
     <div className="app-container" style={{ height: 'auto', minHeight: '90vh' }}>
@@ -181,7 +237,7 @@ const App: React.FC = () => {
       {activeTab === 'calc' && (
         <>
           <div className="builder-area">
-            <PokemonConfigPanel title="Player 1" config={p1Config} setConfig={setP1Config} isP2={false} />
+            <PokemonConfigPanel title="Player 1" config={p1Config} setConfig={setP1Config} isP2={false} onSave={handleSaveToTeam} />
             <PokemonConfigPanel title="Player 2 (Target)" config={p2Config} setConfig={setP2Config} isP2={true} />
           </div>
 
@@ -208,7 +264,25 @@ const App: React.FC = () => {
               borderColor: result.multiplier > 1 ? 'var(--hp-green)' : result.multiplier < 1 ? 'var(--hp-red)' : 'var(--border)' 
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                <span className="damage-move-name" style={{ fontSize: '1.2rem' }}>{result.move}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <button 
+                    onClick={() => toggleCoreMove(result.move)}
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      fontSize: '1.2rem', 
+                      color: (p1Config.moves || []).includes(result.move) ? '#fbbc04' : '#e0e0e0',
+                      padding: 0,
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}
+                    title={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                  >
+                    {(p1Config.moves || []).includes(result.move) ? '★' : '☆'}
+                  </button>
+                  <span className="damage-move-name" style={{ fontSize: '1.2rem' }}>{result.move}</span>
+                </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   {result.koStr && result.koStr.toLowerCase().includes('ohko') && (
                     <span style={{
@@ -260,6 +334,68 @@ const App: React.FC = () => {
 
       {activeTab === 'types' && (
         <TypeChartPanel />
+      )}
+
+      {/* FAB and Drawer */}
+      <button 
+        className="team-fab" 
+        onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
+        title="My Team"
+      >
+        🛡️
+      </button>
+
+      {isTeamFabOpen && (
+        <div className="team-drawer" ref={teamDrawerRef}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
+            <h3 style={{ margin: 0 }}>My Team</h3>
+            <button 
+              onClick={() => setIsTeamFabOpen(false)} 
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
+            >
+              ✕
+            </button>
+          </div>
+          {team.length === 0 ? (
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>No Pokémon saved yet. Configure a Pokémon and click "Save to Team".</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {team.map((pokemon, idx) => (
+                <div key={idx} className="team-drawer-item">
+                  <div className="team-drawer-item-info">
+                    <span style={{ fontWeight: 'bold' }}>{pokemon.species || '(No Species)'}</span>
+                    <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Lvl {pokemon.level}</span>
+                    {pokemon.moves && pokemon.moves.some(m => m) && (
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                        {pokemon.moves.filter(m => m).map((m, i) => (
+                          <span key={i} style={{ background: '#f3f4f5', padding: '2px 6px', borderRadius: '4px', border: '1px solid var(--border)' }}>{m}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button 
+                      className="team-drawer-item-btn"
+                      onClick={() => {
+                        setP1Config(pokemon);
+                        setIsTeamFabOpen(false);
+                      }}
+                    >
+                      Select
+                    </button>
+                    <button 
+                      className="team-drawer-remove-btn"
+                      onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
+                      title="Remove"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
