@@ -157,7 +157,7 @@ select:focus, input:focus {
 
 .stats-grid-header {
   display: grid;
-  grid-template-columns: 40px 40px 1fr 1fr;
+  grid-template-columns: 40px 40px 1fr 1fr 40px;
   gap: 8px;
   font-size: 12px;
   text-transform: uppercase;
@@ -169,7 +169,7 @@ select:focus, input:focus {
 
 .stat-row {
   display: grid;
-  grid-template-columns: 40px 40px 1fr 1fr;
+  grid-template-columns: 40px 40px 1fr 1fr 40px;
   gap: 8px;
   align-items: center;
 }
@@ -296,11 +296,11 @@ select:focus, input:focus {
     width: 100%;
   }
   .stats-grid-header {
-    grid-template-columns: 30px 30px 1fr 1fr;
+    grid-template-columns: 30px 30px 1fr 1fr 30px;
     gap: 4px;
   }
   .stat-row {
-    grid-template-columns: 30px 30px 1fr 1fr;
+    grid-template-columns: 30px 30px 1fr 1fr 30px;
     gap: 4px;
   }
   .stat-btn {
@@ -379,6 +379,16 @@ select:focus, input:focus {
   text-align: center;
   color: var(--text-main);
   background-color: #f3f4f5; /* surface-container-low */
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.stat-total-badge {
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-main);
+  background-color: #e7e8e9; /* surface-container-high */
   padding: 6px;
   border-radius: 8px;
 }
