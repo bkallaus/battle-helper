@@ -109,6 +109,7 @@ export const TypeChartPanel = () => {
                 type="button"
                 key={t}
                 onClick={() => handleTypeToggle(t)}
+                aria-pressed={isActive}
                 className={`tab-btn`}
                 style={{ 
                   background: bg,

@@ -267,6 +267,7 @@ const App: React.FC = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <button 
                     onClick={() => toggleCoreMove(result.move)}
+                    aria-pressed={(p1Config.moves || []).includes(result.move)}
                     style={{ 
                       background: 'none', 
                       border: 'none', 
@@ -341,16 +342,20 @@ const App: React.FC = () => {
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         title="My Team"
+        aria-label="My Team"
+        aria-expanded={isTeamFabOpen}
+        aria-controls="team-drawer"
       >
         🛡️
       </button>
 
       {isTeamFabOpen && (
-        <div className="team-drawer" ref={teamDrawerRef}>
+        <div className="team-drawer" id="team-drawer" ref={teamDrawerRef}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
             <h3 style={{ margin: 0 }}>My Team</h3>
             <button 
               onClick={() => setIsTeamFabOpen(false)} 
+              aria-label="Close My Team"
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
             >
               ✕
@@ -387,6 +392,7 @@ const App: React.FC = () => {
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
                       title="Remove"
+                      aria-label="Remove Pokémon from team"
                     >
                       ✕
                     </button>
