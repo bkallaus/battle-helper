@@ -252,7 +252,7 @@ const App: React.FC = () => {
               onChange={e => setMoveFilter(e.target.value)}
             />
             {moveFilter && (
-              <button type="button" className="clear-input-btn" onClick={() => setMoveFilter('')} aria-label="Clear">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => setMoveFilter('')} aria-label="Clear move filter">✕</button>
             )}
           </div>
         </div>
@@ -278,6 +278,8 @@ const App: React.FC = () => {
                       alignItems: 'center'
                     }}
                     title={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    aria-label={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    aria-pressed={(p1Config.moves || []).includes(result.move)}
                   >
                     {(p1Config.moves || []).includes(result.move) ? '★' : '☆'}
                   </button>
@@ -341,6 +343,8 @@ const App: React.FC = () => {
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         title="My Team"
+        aria-label="Toggle My Team"
+        aria-expanded={isTeamFabOpen}
       >
         🛡️
       </button>
@@ -352,6 +356,7 @@ const App: React.FC = () => {
             <button 
               onClick={() => setIsTeamFabOpen(false)} 
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
+              aria-label="Close My Team drawer"
             >
               ✕
             </button>
@@ -387,6 +392,7 @@ const App: React.FC = () => {
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
                       title="Remove"
+                      aria-label={`Remove ${pokemon.species || 'Pokémon'} from team`}
                     >
                       ✕
                     </button>

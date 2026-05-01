@@ -53,7 +53,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
               placeholder="Type a Pokémon..."
             />
             {config.species && (
-              <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, species: '', moves: [] })} aria-label="Clear">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, species: '', moves: [] })} aria-label="Clear Pokémon species">✕</button>
             )}
           </div>
           <datalist id={`species-list-${isP2 ? 'p2' : 'p1'}`}>
