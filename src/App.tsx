@@ -278,6 +278,8 @@ const App: React.FC = () => {
                       alignItems: 'center'
                     }}
                     title={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    aria-label={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    aria-pressed={(p1Config.moves || []).includes(result.move)}
                   >
                     {(p1Config.moves || []).includes(result.move) ? '★' : '☆'}
                   </button>
@@ -341,17 +343,21 @@ const App: React.FC = () => {
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         title="My Team"
+        aria-label="My Team"
+        aria-expanded={isTeamFabOpen}
+        aria-controls="team-drawer"
       >
         🛡️
       </button>
 
       {isTeamFabOpen && (
-        <div className="team-drawer" ref={teamDrawerRef}>
+        <div id="team-drawer" className="team-drawer" ref={teamDrawerRef}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
             <h3 style={{ margin: 0 }}>My Team</h3>
             <button 
               onClick={() => setIsTeamFabOpen(false)} 
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
+              aria-label="Close My Team drawer"
             >
               ✕
             </button>
@@ -387,6 +393,7 @@ const App: React.FC = () => {
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
                       title="Remove"
+                      aria-label="Remove from team"
                     >
                       ✕
                     </button>
