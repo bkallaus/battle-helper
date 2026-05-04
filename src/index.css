@@ -26,8 +26,9 @@
   padding: 0;
 }
 
-html, body {
-  overflow-x: hidden;
+html,
+body {
+  overflow-x: clip;
 }
 
 body {
@@ -90,6 +91,11 @@ h2 {
   margin-bottom: 8px;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
+  padding-top: 8px;
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-dark);
+  z-index: 50;
 }
 
 .tab-btn {
