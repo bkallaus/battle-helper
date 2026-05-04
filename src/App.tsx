@@ -108,6 +108,7 @@ const App: React.FC = () => {
     try {
       const p1 = new Pokemon(9, p1Config.species, {
         level: p1Config.level,
+        nature: p1Config.nature,
         ivs: p1Config.ivs,
         evs: p1Config.evs,
         boosts: p1Config.boosts,
@@ -115,6 +116,7 @@ const App: React.FC = () => {
 
       const p2 = new Pokemon(9, p2Config.species, {
         level: p2Config.level,
+        nature: p2Config.nature,
         ivs: p2Config.ivs,
         evs: p2Config.evs,
         boosts: p2Config.boosts,

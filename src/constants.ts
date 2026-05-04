@@ -5,7 +5,8 @@ export const defaultEVs = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 export const defaultBoosts = { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 
 export const defaultP1: PokemonConfig = {
-  species: 'Pikachu',
+  species: "Pikachu",
+  nature: "Serious",
   ivs: { ...defaultStats },
   evs: { ...defaultEVs },
   boosts: { ...defaultBoosts },
@@ -14,7 +15,8 @@ export const defaultP1: PokemonConfig = {
 };
 
 export const defaultP2: PokemonConfig = {
-  species: 'Charizard',
+  species: "Charizard",
+  nature: "Serious",
   ivs: { ...defaultStats },
   evs: { ...defaultEVs },
   boosts: { ...defaultBoosts },

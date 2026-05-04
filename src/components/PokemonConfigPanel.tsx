@@ -1,10 +1,10 @@
 import React from 'react';
 import { Dex } from '@pkmn/dex';
 import { PokemonConfig } from '../types';
-import { allSpecies } from '../data';
+import { allSpecies, allNatures } from '../data';
 import { defaultEVs, defaultBoosts } from '../constants';
 
-const calculateStat = (statName: string, baseStat: number, level: number, iv: number, ev: number, boost: number) => {
+const calculateStat = (statName: string, baseStat: number, level: number, iv: number, ev: number, boost: number, natureName: string) => {
   if (baseStat === 0) return 0;
 
   // Calculate raw stat
@@ -14,7 +14,14 @@ const calculateStat = (statName: string, baseStat: number, level: number, iv: nu
       stat = Math.floor(((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100) + level + 10;
   } else {
       stat = Math.floor(((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100) + 5;
-      // Natures aren't in PokemonConfig currently, so we assume neutral nature.
+      
+      // Apply Nature multiplier
+      const nature = Dex.natures.get(natureName);
+      if (nature?.plus === statName) {
+          stat = Math.floor(stat * 1.1);
+      } else if (nature?.minus === statName) {
+          stat = Math.floor(stat * 0.9);
+      }
   }
 
   // Apply boosts
@@ -29,10 +36,20 @@ const calculateStat = (statName: string, baseStat: number, level: number, iv: nu
   return stat;
 };
 
+const statNames: Record<string, string> = {
+  hp: 'HP',
+  atk: 'Atk',
+  def: 'Def',
+  spa: 'SpA',
+  spd: 'SpD',
+  spe: 'Spe'
+};
+
 export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: { title: string, config: PokemonConfig, setConfig: any, isP2: boolean, onSave?: () => void }) => {
   const speciesInfo = Dex.species.get(config.species);
   const types = speciesInfo?.types || [];
   const baseStats = speciesInfo?.baseStats || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+  const currentNature = Dex.natures.get(config.nature);
 
   const handleSpeciesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfig({ ...config, species: e.target.value, moves: [] });
@@ -68,6 +85,31 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
           </div>
         </div>
       </div>
+
+      <div className="form-group">
+        <label>Nature</label>
+        <div className="input-with-clear">
+          <input
+            list={`nature-list-${isP2 ? "p2" : "p1"}`}
+            value={config.nature}
+            onChange={(e) => setConfig({ ...config, nature: e.target.value })}
+            onFocus={() => setConfig({ ...config, nature: "" })}
+            placeholder="Type a Nature..."
+          />
+          {config.nature && (
+            <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, nature: "Serious" })} aria-label="Clear">✕</button>
+          )}
+        </div>
+        <datalist id={`nature-list-${isP2 ? "p2" : "p1"}`}>
+          {allNatures.map(n => {
+            const plus = n.plus ? statNames[n.plus] : null;
+            const minus = n.minus ? statNames[n.minus] : null;
+            const label = plus && minus ? `${n.name} (+${plus}, -${minus})` : `${n.name} (Neutral)`;
+            return <option key={n.name} value={n.name}>{label}</option>;
+          })}
+        </datalist>
+      </div>
+
       <details style={{ marginBottom: '16px', background: '#f3f4f5', padding: '8px', borderRadius: '8px', border: '1px solid var(--border)' }}>
         <summary style={{ fontSize: '12px', textTransform: 'uppercase', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none', fontWeight: 500, letterSpacing: '0.05em' }}>
           Level (Currently: {config.level})
@@ -82,9 +124,14 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
         <div className="stats-grid-header">
           <span style={{ textAlign: 'left' }}>STAT</span><span>BASE</span><span>EV (0-32)</span><span>BOOST (-6 to +6)</span><span>TOTAL</span>
         </div>
-        {(Object.keys(config.evs) as Array<keyof typeof config.evs>).map(stat => (
+        {(Object.keys(config.evs) as Array<keyof typeof config.evs>).map(stat => {
+          const isPlus = currentNature?.plus === stat;
+          const isMinus = currentNature?.minus === stat;
+          return (
           <div key={stat} className="stat-row">
-            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 'bold' }}>{stat}</span>
+            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 'bold', color: isPlus ? 'var(--hp-green, #10b981)' : isMinus ? 'var(--hp-red, #ef4444)' : 'inherit' }}>
+              {stat}{isPlus ? '+' : isMinus ? '-' : ''}
+            </span>
             <span className="stat-base-badge">{(baseStats as any)[stat]}</span>
             <div className="stat-controls">
               <span className="stat-value">{config.evs[stat]}</span>
@@ -111,9 +158,10 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                 >-1</button>
               </div>
             ) : <div />}
-            <span className="stat-total-badge">{calculateStat(stat, (baseStats as any)[stat], config.level, config.ivs[stat], config.evs[stat], stat !== 'hp' ? config.boosts[stat] : 0)}</span>
+            <span className="stat-total-badge">{calculateStat(stat, (baseStats as any)[stat], config.level, config.ivs[stat], config.evs[stat], stat !== 'hp' ? config.boosts[stat] : 0, config.nature)}</span>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <div style={{ display: 'flex', gap: '0.5rem', marginTop: '16px' }}>
