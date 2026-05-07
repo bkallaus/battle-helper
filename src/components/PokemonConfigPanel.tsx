@@ -59,10 +59,11 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
     <div className="builder-panel">
       <h2>{title}</h2>
       <div className="form-group">
-        <label>Species & Types</label>
+        <label htmlFor={`species-input-${isP2 ? 'p2' : 'p1'}`}>Species & Types</label>
         <div className="species-input-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <div className="input-with-clear" style={{ flex: 1, minWidth: '200px' }}>
             <input
+              id={`species-input-${isP2 ? 'p2' : 'p1'}`}
               list={`species-list-${isP2 ? 'p2' : 'p1'}`}
               value={config.species}
               onChange={handleSpeciesChange}
@@ -87,9 +88,10 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
       </div>
 
       <div className="form-group">
-        <label>Nature</label>
+        <label htmlFor={`nature-input-${isP2 ? "p2" : "p1"}`}>Nature</label>
         <div className="input-with-clear">
           <input
+            id={`nature-input-${isP2 ? "p2" : "p1"}`}
             list={`nature-list-${isP2 ? "p2" : "p1"}`}
             value={config.nature}
             onChange={(e) => setConfig({ ...config, nature: e.target.value })}
@@ -115,7 +117,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
           Level (Currently: {config.level})
         </summary>
         <div style={{ marginTop: '0.5rem' }}>
-          <input type="number" value={config.level} min={1} max={100} onChange={e => setConfig({ ...config, level: parseInt(e.target.value) || 50 })} style={{ width: '100%' }} />
+          <input aria-label="Level" type="number" value={config.level} min={1} max={100} onChange={e => setConfig({ ...config, level: parseInt(e.target.value) || 50 })} style={{ width: '100%' }} />
         </div>
       </details>
 
