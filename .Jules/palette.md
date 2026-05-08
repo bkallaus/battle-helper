@@ -1,0 +1,3 @@
+## 2026-05-08 - Missing ARIA attributes for custom icon buttons
+**Learning:** Interactive components using icons as their content (like the star icon for core moves, the shield for the team FAB, or the X for the close button) lacked required `aria-label`, `aria-pressed`, and `aria-expanded` attributes in `src/App.tsx`. This made the intent of these interactive elements inaccessible to screen readers.
+**Action:** When adding or maintaining custom toggle or icon-only buttons, ensure to map interactive states to ARIA states (e.g. `aria-pressed` for toggle buttons, `aria-expanded` for menus/drawers) and provide descriptive `aria-label`s.
