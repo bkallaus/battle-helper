@@ -165,7 +165,7 @@ const App: React.FC = () => {
              maxDamage = result.range()[1];
           } catch(e) {
              if (Array.isArray(result.damage)) {
-               maxDamage = Math.max(...result.damage);
+               maxDamage = Math.max(...(result.damage as number[]));
              } else if (typeof result.damage === 'number') {
                maxDamage = result.damage;
              }
@@ -269,6 +269,7 @@ const App: React.FC = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <button 
                     onClick={() => toggleCoreMove(result.move)}
+                    aria-pressed={(p1Config.moves || []).includes(result.move)}
                     style={{ 
                       background: 'none', 
                       border: 'none', 
@@ -343,17 +344,20 @@ const App: React.FC = () => {
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         title="My Team"
+        aria-expanded={isTeamFabOpen}
+        aria-controls="team-drawer-panel"
       >
         🛡️
       </button>
 
       {isTeamFabOpen && (
-        <div className="team-drawer" ref={teamDrawerRef}>
+        <div id="team-drawer-panel" className="team-drawer" ref={teamDrawerRef}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
             <h3 style={{ margin: 0 }}>My Team</h3>
             <button 
               onClick={() => setIsTeamFabOpen(false)} 
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
+              aria-label="Close team drawer"
             >
               ✕
             </button>
@@ -389,6 +393,7 @@ const App: React.FC = () => {
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
                       title="Remove"
+                      aria-label="Remove from team"
                     >
                       ✕
                     </button>
