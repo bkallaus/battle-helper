@@ -59,10 +59,11 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
     <div className="builder-panel">
       <h2>{title}</h2>
       <div className="form-group">
-        <label>Species & Types</label>
+        <label htmlFor={`species-input-${isP2 ? 'p2' : 'p1'}`}>Species & Types</label>
         <div className="species-input-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <div className="input-with-clear" style={{ flex: 1, minWidth: '200px' }}>
             <input
+              id={`species-input-${isP2 ? 'p2' : 'p1'}`}
               list={`species-list-${isP2 ? 'p2' : 'p1'}`}
               value={config.species}
               onChange={handleSpeciesChange}
@@ -70,7 +71,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
               placeholder="Type a Pokémon..."
             />
             {config.species && (
-              <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, species: '', moves: [] })} aria-label="Clear">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, species: '', moves: [] })} aria-label="Clear species selection">✕</button>
             )}
           </div>
           <datalist id={`species-list-${isP2 ? 'p2' : 'p1'}`}>
@@ -87,9 +88,10 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
       </div>
 
       <div className="form-group">
-        <label>Nature</label>
+        <label htmlFor={`nature-input-${isP2 ? "p2" : "p1"}`}>Nature</label>
         <div className="input-with-clear">
           <input
+            id={`nature-input-${isP2 ? "p2" : "p1"}`}
             list={`nature-list-${isP2 ? "p2" : "p1"}`}
             value={config.nature}
             onChange={(e) => setConfig({ ...config, nature: e.target.value })}
@@ -97,7 +99,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
             placeholder="Type a Nature..."
           />
           {config.nature && (
-            <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, nature: "Serious" })} aria-label="Clear">✕</button>
+            <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, nature: "Serious" })} aria-label="Clear nature selection">✕</button>
           )}
         </div>
         <datalist id={`nature-list-${isP2 ? "p2" : "p1"}`}>
@@ -115,7 +117,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
           Level (Currently: {config.level})
         </summary>
         <div style={{ marginTop: '0.5rem' }}>
-          <input type="number" value={config.level} min={1} max={100} onChange={e => setConfig({ ...config, level: parseInt(e.target.value) || 50 })} style={{ width: '100%' }} />
+          <input type="number" aria-label="Level" value={config.level} min={1} max={100} onChange={e => setConfig({ ...config, level: parseInt(e.target.value) || 50 })} style={{ width: '100%' }} />
         </div>
       </details>
 
@@ -139,6 +141,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                 type="button"
                 className={config.evs[stat] > 0 ? "stat-btn clr-btn" : "stat-btn"}
                 onClick={() => setConfig({ ...config, evs: { ...config.evs, [stat]: config.evs[stat] > 0 ? 0 : 32 } })}
+                aria-label={config.evs[stat] > 0 ? `Clear ${statNames[stat] || stat} EVs` : `Max ${statNames[stat] || stat} EVs`}
               >
                 {config.evs[stat] > 0 ? 'Clr' : 'Max'}
               </button>
@@ -150,11 +153,13 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                   type="button"
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.min(6, config.boosts[stat] + 1) } })}
+                  aria-label={`Increase ${statNames[stat] || stat} boost`}
                 >+1</button>
                 <button
                   type="button"
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.max(-6, config.boosts[stat] - 1) } })}
+                  aria-label={`Decrease ${statNames[stat] || stat} boost`}
                 >-1</button>
               </div>
             ) : <div />}
