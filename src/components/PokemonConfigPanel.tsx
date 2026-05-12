@@ -139,6 +139,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                 type="button"
                 className={config.evs[stat] > 0 ? "stat-btn clr-btn" : "stat-btn"}
                 onClick={() => setConfig({ ...config, evs: { ...config.evs, [stat]: config.evs[stat] > 0 ? 0 : 32 } })}
+                aria-label={config.evs[stat] > 0 ? `Clear ${stat} EVs` : `Max ${stat} EVs`}
               >
                 {config.evs[stat] > 0 ? 'Clr' : 'Max'}
               </button>
@@ -150,11 +151,13 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                   type="button"
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.min(6, config.boosts[stat] + 1) } })}
+                  aria-label={`Increase ${stat} boost`}
                 >+1</button>
                 <button
                   type="button"
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.max(-6, config.boosts[stat] - 1) } })}
+                  aria-label={`Decrease ${stat} boost`}
                 >-1</button>
               </div>
             ) : <div />}

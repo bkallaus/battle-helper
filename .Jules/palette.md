@@ -1,0 +1,3 @@
+## 2024-05-12 - Accessible Stat Controls & Visible Focus
+**Learning:** Screen readers struggle with densely packed, heavily abbreviated UI controls (like "+1", "-1", "Clr", "Max" in stat configurators). Additionally, custom themed web applications often inadvertently suppress default browser focus outlines without providing an alternative, making keyboard navigation difficult.
+**Action:** Always provide contextual `aria-label`s on abbreviated adjustment buttons (e.g., ``aria-label={`Increase ${stat} boost`}``) and ensure a global `*:focus-visible` CSS rule is defined using design system tokens (e.g., `outline: 2px solid var(--accent)`) to maintain both aesthetics and accessibility.
