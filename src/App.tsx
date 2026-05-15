@@ -231,9 +231,23 @@ const App: React.FC = () => {
         <h1>VGC Tactical HUD</h1>
       </div>
 
-      <div className="tabs-container">
-        <button className={`tab-btn ${activeTab === 'calc' ? 'active' : ''}`} onClick={() => setActiveTab('calc')}>Damage Calculator</button>
-        <button className={`tab-btn ${activeTab === 'types' ? 'active' : ''}`} onClick={() => setActiveTab('types')}>Type Chart</button>
+      <div className="tabs-container" role="tablist">
+        <button
+          className={`tab-btn ${activeTab === 'calc' ? 'active' : ''}`}
+          onClick={() => setActiveTab('calc')}
+          role="tab"
+          aria-selected={activeTab === 'calc'}
+        >
+          Damage Calculator
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'types' ? 'active' : ''}`}
+          onClick={() => setActiveTab('types')}
+          role="tab"
+          aria-selected={activeTab === 'types'}
+        >
+          Type Chart
+        </button>
       </div>
 
       {activeTab === 'calc' && (
