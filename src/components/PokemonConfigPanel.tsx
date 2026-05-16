@@ -150,11 +150,17 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                   type="button"
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.min(6, config.boosts[stat] + 1) } })}
+                  disabled={config.boosts[stat] >= 6}
+                  aria-label={`Increase ${stat} boost`}
+                  title={config.boosts[stat] >= 6 ? "Maximum boost reached" : "Increase boost"}
                 >+1</button>
                 <button
                   type="button"
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.max(-6, config.boosts[stat] - 1) } })}
+                  disabled={config.boosts[stat] <= -6}
+                  aria-label={`Decrease ${stat} boost`}
+                  title={config.boosts[stat] <= -6 ? "Minimum boost reached" : "Decrease boost"}
                 >-1</button>
               </div>
             ) : <div />}
