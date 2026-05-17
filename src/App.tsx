@@ -249,6 +249,7 @@ const App: React.FC = () => {
           <div className="move-filter-container input-with-clear">
             <input 
               type="text" 
+              aria-label="Filter moves"
               placeholder="Type ahead moves..." 
               value={moveFilter}
               onChange={e => setMoveFilter(e.target.value)}
