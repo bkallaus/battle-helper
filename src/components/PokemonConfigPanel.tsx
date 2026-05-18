@@ -121,8 +121,8 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
         </div>
       </details>
 
-      <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Stats (EVs / Boosts)</label>
-      <div style={{ display: 'grid', gap: '0.5rem' }}>
+      <label id={`stats-group-${isP2 ? 'p2' : 'p1'}`} style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Stats (EVs / Boosts)</label>
+      <div role="group" aria-labelledby={`stats-group-${isP2 ? 'p2' : 'p1'}`} style={{ display: 'grid', gap: '0.5rem' }}>
         <div className="stats-grid-header">
           <span style={{ textAlign: 'left' }}>STAT</span><span>BASE</span><span>EV (0-32)</span><span>BOOST (-6 to +6)</span><span>TOTAL</span>
         </div>
@@ -141,6 +141,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                 type="button"
                 className={config.evs[stat] > 0 ? "stat-btn clr-btn" : "stat-btn"}
                 onClick={() => setConfig({ ...config, evs: { ...config.evs, [stat]: config.evs[stat] > 0 ? 0 : 32 } })}
+                aria-label={config.evs[stat] > 0 ? `Clear ${statNames[stat] || stat} EVs` : `Maximize ${statNames[stat] || stat} EVs`}
               >
                 {config.evs[stat] > 0 ? 'Clr' : 'Max'}
               </button>
