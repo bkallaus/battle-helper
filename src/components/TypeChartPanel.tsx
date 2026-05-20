@@ -56,8 +56,8 @@ export const TypeChartPanel = () => {
       <h2>Type Matchup Calculator</h2>
       
       <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-        <label>Attacking Type</label>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
+        <label id="attacking-type-label">Attacking Type</label>
+        <div role="group" aria-labelledby="attacking-type-label" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
           {allTypes.map(t => (
             <button
               type="button"
@@ -65,6 +65,7 @@ export const TypeChartPanel = () => {
               onClick={() => setAttackingType(t)}
               className={`tab-btn ${attackingType === t ? 'active' : ''}`}
               style={{ border: '1px solid var(--border)', fontSize: '14px' }}
+              aria-pressed={attackingType === t}
             >
               {t}
             </button>
@@ -73,8 +74,8 @@ export const TypeChartPanel = () => {
       </div>
 
       <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-        <label>Defending Type(s) - Select up to 2</label>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
+        <label id="defending-type-label">Defending Type(s) - Select up to 2</label>
+        <div role="group" aria-labelledby="defending-type-label" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
           {allTypes.map(t => {
             const isImmune = !Dex.getImmunity(attackingType, [t]);
             const eff = Dex.getEffectiveness(attackingType, [t]);
@@ -123,6 +124,7 @@ export const TypeChartPanel = () => {
                   transform: isActive ? 'scale(1.05)' : 'none',
                   transition: 'all 0.2s'
                 }}
+                aria-pressed={isActive}
               >
                 {t} {effBadge && <span style={{ opacity: 0.9, fontSize: '11px', background: 'rgba(0,0,0,0.2)', padding: '2px 4px', borderRadius: '4px' }}>{effBadge}</span>}
               </button>
@@ -134,9 +136,10 @@ export const TypeChartPanel = () => {
       <div style={{ marginBottom: '1.5rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>— OR —</div>
 
       <div className="form-group" style={{ marginBottom: '1.5rem', maxWidth: '300px' }}>
-        <label>Search Defending Pokémon</label>
+        <label htmlFor="search-defending-pokemon">Search Defending Pokémon</label>
         <div className="input-with-clear" style={{ marginTop: '0.5rem' }}>
           <input 
+            id="search-defending-pokemon"
             list="species-list-typechart" 
             value={defendingSpecies} 
             onChange={handleSpeciesChange} 
