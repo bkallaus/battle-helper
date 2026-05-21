@@ -121,8 +121,8 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
         </div>
       </details>
 
-      <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Stats (EVs / Boosts)</label>
-      <div style={{ display: 'grid', gap: '0.5rem' }}>
+      <label id={`stats-label-${isP2 ? 'p2' : 'p1'}`} style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Stats (EVs / Boosts)</label>
+      <div role="group" aria-labelledby={`stats-label-${isP2 ? 'p2' : 'p1'}`} style={{ display: 'grid', gap: '0.5rem' }}>
         <div className="stats-grid-header">
           <span style={{ textAlign: 'left' }}>STAT</span><span>BASE</span><span>EV (0-32)</span><span>BOOST (-6 to +6)</span><span>TOTAL</span>
         </div>

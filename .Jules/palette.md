@@ -1,3 +1,6 @@
 ## 2024-05-18 - Input Association Accessibility
 **Learning:** Found that custom search inputs (like 'Species', 'Nature', and Move filter) and deeply nested control structures lacking direct `<label>` tags created a significant barrier for screen readers in complex forms (VGC Tactical HUD). This was noticeable since many input fields function effectively as comboboxes or search boxes and rely purely on visual proximity and placeholder text for context.
 **Action:** Always ensure that every `<input>` uses a direct `id` referenced by a `<label htmlFor="id">` or explicitly has an `aria-label` when a visible label isn't practical or lacks one. Ensure icon-only clear buttons ("✕") provide full context via `aria-label` (e.g., "Clear species" instead of "Clear").
+## 2024-05-18 - Semantic Grouping for Form Inputs & Custom Button Grids
+**Learning:** This application heavily utilizes collections of custom interactive elements acting like radios/checkboxes (e.g. `tab-btn` and `stat-btn` grids) which individually lack semantic connections. Screen readers struggle with these floating buttons or unlabeled inputs.
+**Action:** Always wrap custom button clusters in a container with `role="group"` and `aria-labelledby` linking back to the group's `<label>`. Ensure every `<input>` uses either an `id` matching its `<label htmlFor>` or an `aria-label` when isolated.
