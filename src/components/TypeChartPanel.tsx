@@ -56,14 +56,15 @@ export const TypeChartPanel = () => {
       <h2>Type Matchup Calculator</h2>
       
       <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-        <label>Attacking Type</label>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
+        <label id="attacking-type-label">Attacking Type</label>
+        <div role="group" aria-labelledby="attacking-type-label" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
           {allTypes.map(t => (
             <button
               type="button"
               key={t}
               onClick={() => setAttackingType(t)}
               className={`tab-btn ${attackingType === t ? 'active' : ''}`}
+              aria-pressed={attackingType === t}
               style={{ border: '1px solid var(--border)', fontSize: '14px' }}
             >
               {t}
@@ -73,8 +74,8 @@ export const TypeChartPanel = () => {
       </div>
 
       <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-        <label>Defending Type(s) - Select up to 2</label>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
+        <label id="defending-type-label">Defending Type(s) - Select up to 2</label>
+        <div role="group" aria-labelledby="defending-type-label" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
           {allTypes.map(t => {
             const isImmune = !Dex.getImmunity(attackingType, [t]);
             const eff = Dex.getEffectiveness(attackingType, [t]);
@@ -110,6 +111,7 @@ export const TypeChartPanel = () => {
                 key={t}
                 onClick={() => handleTypeToggle(t)}
                 className={`tab-btn`}
+                aria-pressed={isActive}
                 style={{ 
                   background: bg,
                   color: color,
@@ -134,9 +136,10 @@ export const TypeChartPanel = () => {
       <div style={{ marginBottom: '1.5rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>— OR —</div>
 
       <div className="form-group" style={{ marginBottom: '1.5rem', maxWidth: '300px' }}>
-        <label>Search Defending Pokémon</label>
+        <label htmlFor="defending-species-input">Search Defending Pokémon</label>
         <div className="input-with-clear" style={{ marginTop: '0.5rem' }}>
           <input 
+            id="defending-species-input"
             list="species-list-typechart" 
             value={defendingSpecies} 
             onChange={handleSpeciesChange} 
