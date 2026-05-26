@@ -129,9 +129,10 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
         {(Object.keys(config.evs) as Array<keyof typeof config.evs>).map(stat => {
           const isPlus = currentNature?.plus === stat;
           const isMinus = currentNature?.minus === stat;
+          const statLabelId = `stat-label-${isP2 ? 'p2' : 'p1'}-${stat}`;
           return (
-          <div key={stat} className="stat-row">
-            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 'bold', color: isPlus ? 'var(--hp-green, #10b981)' : isMinus ? 'var(--hp-red, #ef4444)' : 'inherit' }}>
+          <div key={stat} className="stat-row" role="group" aria-labelledby={statLabelId}>
+            <span id={statLabelId} style={{ fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 'bold', color: isPlus ? 'var(--hp-green, #10b981)' : isMinus ? 'var(--hp-red, #ef4444)' : 'inherit' }}>
               {stat}{isPlus ? '+' : isMinus ? '-' : ''}
             </span>
             <span className="stat-base-badge">{(baseStats as any)[stat]}</span>
@@ -141,6 +142,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                 type="button"
                 className={config.evs[stat] > 0 ? "stat-btn clr-btn" : "stat-btn"}
                 onClick={() => setConfig({ ...config, evs: { ...config.evs, [stat]: config.evs[stat] > 0 ? 0 : 32 } })}
+                aria-label={config.evs[stat] > 0 ? `Clear ${stat} EVs` : `Maximize ${stat} EVs`}
               >
                 {config.evs[stat] > 0 ? 'Clr' : 'Max'}
               </button>

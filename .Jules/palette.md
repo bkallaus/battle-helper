@@ -5,3 +5,6 @@
 ## 2025-05-24 - Grouping Toggle Button Clusters
 **Learning:** In applications with grids of custom interactive toggle buttons (like the Type Chart calculator), individual buttons lack collective context for screen reader users. The relationship between the label (e.g., "Attacking Type") and the buttons is lost without proper grouping.
 **Action:** When working with clusters of custom interactive buttons (e.g., UI toggle grids), group them semantically using `role="group"` and reference them with `aria-labelledby` on their container so screen readers understand the collective action. Add `aria-pressed` to individual toggle buttons to indicate active state.
+## 2024-10-24 - Dynamic ARIA Labels for Repetitive Matrix Controls
+**Learning:** Matrix interfaces like stat builders often have grids of identical buttons (e.g. "Max", "Clr", "+1", "-1"). Without unique `aria-label`s and `role="group"` on the row, screen reader users only hear "Max button", requiring them to explore the DOM manually to discover which stat it modifies.
+**Action:** Always wrap matrix rows in `role="group"` tied to the row label (`aria-labelledby`), and explicitly template `aria-label` attributes for repetitive controls using the row context (e.g., `aria-label="Maximize HP EVs"`).
