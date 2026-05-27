@@ -135,25 +135,26 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
               {stat}{isPlus ? '+' : isMinus ? '-' : ''}
             </span>
             <span className="stat-base-badge">{(baseStats as any)[stat]}</span>
-            <div className="stat-controls">
+            <div className="stat-controls" role="group" aria-label={`${statNames[stat] || stat.toUpperCase()} EV controls`}>
               <span className="stat-value">{config.evs[stat]}</span>
               <button
                 type="button"
                 className={config.evs[stat] > 0 ? "stat-btn clr-btn" : "stat-btn"}
                 onClick={() => setConfig({ ...config, evs: { ...config.evs, [stat]: config.evs[stat] > 0 ? 0 : 32 } })}
+                aria-label={config.evs[stat] > 0 ? `Clear ${statNames[stat] || stat.toUpperCase()} EVs` : `Maximize ${statNames[stat] || stat.toUpperCase()} EVs`}
               >
                 {config.evs[stat] > 0 ? 'Clr' : 'Max'}
               </button>
             </div>
             {stat !== 'hp' ? (
-              <div className="stat-controls">
+              <div className="stat-controls" role="group" aria-label={`${statNames[stat] || stat.toUpperCase()} Boost controls`}>
                 <span className="stat-value">{config.boosts[stat] > 0 ? `+${config.boosts[stat]}` : config.boosts[stat]}</span>
                 <button
                   type="button"
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.min(6, config.boosts[stat] + 1) } })}
                   disabled={config.boosts[stat] >= 6}
-                  aria-label={`Increase ${stat} boost`}
+                  aria-label={`Increase ${statNames[stat] || stat.toUpperCase()} boost`}
                   title={config.boosts[stat] >= 6 ? "Maximum boost reached" : "Increase boost"}
                 >+1</button>
                 <button
@@ -161,7 +162,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
                   className="stat-btn"
                   onClick={() => setConfig({ ...config, boosts: { ...config.boosts, [stat]: Math.max(-6, config.boosts[stat] - 1) } })}
                   disabled={config.boosts[stat] <= -6}
-                  aria-label={`Decrease ${stat} boost`}
+                  aria-label={`Decrease ${statNames[stat] || stat.toUpperCase()} boost`}
                   title={config.boosts[stat] <= -6 ? "Minimum boost reached" : "Decrease boost"}
                 >-1</button>
               </div>
