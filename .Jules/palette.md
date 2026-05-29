@@ -5,3 +5,6 @@
 ## 2025-05-24 - Grouping Toggle Button Clusters
 **Learning:** In applications with grids of custom interactive toggle buttons (like the Type Chart calculator), individual buttons lack collective context for screen reader users. The relationship between the label (e.g., "Attacking Type") and the buttons is lost without proper grouping.
 **Action:** When working with clusters of custom interactive buttons (e.g., UI toggle grids), group them semantically using `role="group"` and reference them with `aria-labelledby` on their container so screen readers understand the collective action. Add `aria-pressed` to individual toggle buttons to indicate active state.
+## 2026-05-29 - Group and Contextualize Repetitive Grids
+**Learning:** When using custom interactive UI elements clustered in grids (like toggle stats or generic tabs) without native forms, they must be wrapped with `role="group"` and a contextual `aria-label`. Additionally, repetitive generic text like "Clr" or "Max" across multiple rows must be backed by a dynamic `aria-label` (e.g. "Clear HP EVs") so screen readers can disambiguate them.
+**Action:** Always verify if a grid of custom buttons or generic toggles requires structural grouping (`role="group"`) and ensure any visually repetitive abbreviated labels are overridden with descriptive `aria-label`s.

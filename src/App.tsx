@@ -231,7 +231,7 @@ const App: React.FC = () => {
         <h1>VGC Tactical HUD</h1>
       </div>
 
-      <div className="tabs-container">
+      <div className="tabs-container" role="group" aria-label="View selection">
         <button className={`tab-btn ${activeTab === 'calc' ? 'active' : ''}`} onClick={() => setActiveTab('calc')}>Damage Calculator</button>
         <button className={`tab-btn ${activeTab === 'types' ? 'active' : ''}`} onClick={() => setActiveTab('types')}>Type Chart</button>
       </div>
