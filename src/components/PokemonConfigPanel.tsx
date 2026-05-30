@@ -135,18 +135,19 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
               {stat}{isPlus ? '+' : isMinus ? '-' : ''}
             </span>
             <span className="stat-base-badge">{(baseStats as any)[stat]}</span>
-            <div className="stat-controls">
+            <div className="stat-controls" role="group" aria-label={`${stat} EVs`}>
               <span className="stat-value">{config.evs[stat]}</span>
               <button
                 type="button"
                 className={config.evs[stat] > 0 ? "stat-btn clr-btn" : "stat-btn"}
                 onClick={() => setConfig({ ...config, evs: { ...config.evs, [stat]: config.evs[stat] > 0 ? 0 : 32 } })}
+                aria-label={config.evs[stat] > 0 ? `Clear ${stat} EVs` : `Maximize ${stat} EVs`}
               >
                 {config.evs[stat] > 0 ? 'Clr' : 'Max'}
               </button>
             </div>
             {stat !== 'hp' ? (
-              <div className="stat-controls">
+              <div className="stat-controls" role="group" aria-label={`${stat} Boosts`}>
                 <span className="stat-value">{config.boosts[stat] > 0 ? `+${config.boosts[stat]}` : config.boosts[stat]}</span>
                 <button
                   type="button"
