@@ -262,6 +262,39 @@ const App: React.FC = () => {
         <div className="damage-results-grid" style={{ marginTop: '1rem' }}>
           {p1Learnset.length === 0 && <p style={{ color: 'var(--text-muted)' }}>Loading moves...</p>}
           {damageResults.length === 0 && p1Learnset.length > 0 && <p style={{ color: 'var(--text-muted)' }}>No attacking moves found.</p>}
+          {damageResults.length > 0 && displayedResults.length === 0 && (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                gridColumn: '1 / -1',
+                textAlign: 'center',
+                padding: '2rem',
+                background: '#f3f4f5',
+                borderRadius: '8px',
+                border: '1px dashed var(--border)'
+              }}
+            >
+              <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>
+                No moves match the filter "{moveFilter}".
+              </p>
+              <button
+                type="button"
+                onClick={() => setMoveFilter('')}
+                style={{
+                  background: 'var(--accent)',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >
+                Clear Filter
+              </button>
+            </div>
+          )}
           {displayedResults.map((result, idx) => (
             <div key={idx} className="damage-item" style={{ 
               borderColor: result.multiplier > 1 ? 'var(--hp-green)' : result.multiplier < 1 ? 'var(--hp-red)' : 'var(--border)' 
