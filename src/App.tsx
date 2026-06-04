@@ -262,6 +262,25 @@ const App: React.FC = () => {
         <div className="damage-results-grid" style={{ marginTop: '1rem' }}>
           {p1Learnset.length === 0 && <p style={{ color: 'var(--text-muted)' }}>Loading moves...</p>}
           {damageResults.length === 0 && p1Learnset.length > 0 && <p style={{ color: 'var(--text-muted)' }}>No attacking moves found.</p>}
+          {damageResults.length > 0 && moveFilter && displayedResults.length === 0 && (
+            <div role="status" aria-live="polite" style={{ gridColumn: '1 / -1', padding: '2rem', textAlign: 'center', backgroundColor: '#f3f4f5', borderRadius: '8px', border: '1px solid var(--border)' }}>
+              <p style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>No moves match "{moveFilter}".</p>
+              <button
+                onClick={() => setMoveFilter('')}
+                style={{
+                  backgroundColor: 'var(--accent)',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >
+                Clear Filter
+              </button>
+            </div>
+          )}
           {displayedResults.map((result, idx) => (
             <div key={idx} className="damage-item" style={{ 
               borderColor: result.multiplier > 1 ? 'var(--hp-green)' : result.multiplier < 1 ? 'var(--hp-red)' : 'var(--border)' 
