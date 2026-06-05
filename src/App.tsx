@@ -262,6 +262,31 @@ const App: React.FC = () => {
         <div className="damage-results-grid" style={{ marginTop: '1rem' }}>
           {p1Learnset.length === 0 && <p style={{ color: 'var(--text-muted)' }}>Loading moves...</p>}
           {damageResults.length === 0 && p1Learnset.length > 0 && <p style={{ color: 'var(--text-muted)' }}>No attacking moves found.</p>}
+          {damageResults.length > 0 && displayedResults.length === 0 && (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                gridColumn: '1 / -1',
+                padding: '32px',
+                textAlign: 'center',
+                border: '2px dashed var(--border)',
+                borderRadius: '8px',
+                background: 'var(--bg-dark)'
+              }}
+            >
+              <p style={{ color: 'var(--text-muted)', marginBottom: '16px', fontSize: '18px' }}>
+                No moves match "{moveFilter}"
+              </p>
+              <button
+                className="stat-btn clr-btn"
+                onClick={() => setMoveFilter('')}
+                style={{ margin: '0 auto', maxWidth: '200px' }}
+              >
+                Clear Filter
+              </button>
+            </div>
+          )}
           {displayedResults.map((result, idx) => (
             <div key={idx} className="damage-item" style={{ 
               borderColor: result.multiplier > 1 ? 'var(--hp-green)' : result.multiplier < 1 ? 'var(--hp-red)' : 'var(--border)' 
