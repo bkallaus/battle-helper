@@ -7,3 +7,7 @@
 **Action:** When working with clusters of custom interactive buttons (e.g., UI toggle grids), group them semantically using `role="group"` and reference them with `aria-labelledby` on their container so screen readers understand the collective action. Add `aria-pressed` to individual toggle buttons to indicate active state.## 2024-05-31 - [Adding Semantic Roles to Tablists and Form Control Groups]
 **Learning:** When standard HTML buttons and divs are used to build interactive components like tab navigations or clustered stat controls, adding semantic roles (`role="tablist"`, `role="tab"`, `role="group"`) and dynamic ARIA attributes drastically improves screen reader context.
 **Action:** I will proactively look for opportunities to upgrade custom structural components with semantic ARIA roles and labels, especially in complex dashboards.
+
+## 2026-06-06 - Dynamic Empty States and Live Regions
+**Learning:** When filtering dynamic lists (like the move filter) yields no displayed results but the underlying dataset is non-empty, the resulting visual emptiness lacks clear affordance, and screen readers fail to announce the lack of results. This breaks user recovery flow.
+**Action:** Always render a distinct empty state UI with a clear call-to-action (like 'Clear Filter') when filtering yields no results. Apply `role="status"` and `aria-live="polite"` to the container so that screen readers announce the state automatically without focus loss.
