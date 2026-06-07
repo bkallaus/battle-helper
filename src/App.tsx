@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [p1Learnset, setP1Learnset] = useState<string[]>([]);
   const [moveFilter, setMoveFilter] = useState('');
   const [activeTab, setActiveTab] = useState<'calc' | 'types'>('calc');
+  const [copiedMove, setCopiedMove] = useState<string | null>(null);
   const [team, setTeam] = useState<PokemonConfig[]>(() => {
     try {
       const saved = localStorage.getItem('vgc-team');
@@ -346,15 +347,43 @@ const App: React.FC = () => {
               
               {result.damageStr ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.5rem' }}>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--text-main)', fontFamily: '"Lexend", monospace' }}>
-                    {result.damageStr}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--text-main)', fontFamily: '"Lexend", monospace' }}>
+                      {result.damageStr}
+                    </div>
+                    <button
+                      className="stat-btn"
+                      style={{ padding: '4px 8px', fontSize: '12px', minHeight: 'auto', flex: 'none', marginLeft: '8px' }}
+                      aria-label={`Copy damage calculation for ${result.move}`}
+                      onClick={() => {
+                        navigator.clipboard.writeText(result.desc);
+                        setCopiedMove(result.move);
+                        setTimeout(() => setCopiedMove(null), 2000);
+                      }}
+                    >
+                      {copiedMove === result.move ? '✅ Copied' : '📋 Copy'}
+                    </button>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                     {result.context}
                   </div>
                 </div>
               ) : (
-                <span className="damage-desc">{result.desc}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="damage-desc">{result.desc}</span>
+                  <button
+                    className="stat-btn"
+                    style={{ padding: '4px 8px', fontSize: '12px', minHeight: 'auto', flex: 'none', marginLeft: '8px' }}
+                    aria-label={`Copy damage calculation for ${result.move}`}
+                    onClick={() => {
+                      navigator.clipboard.writeText(result.desc);
+                      setCopiedMove(result.move);
+                      setTimeout(() => setCopiedMove(null), 2000);
+                    }}
+                  >
+                    {copiedMove === result.move ? '✅ Copied' : '📋 Copy'}
+                  </button>
+                </div>
               )}
             </div>
           ))}

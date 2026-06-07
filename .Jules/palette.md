@@ -11,3 +11,7 @@
 ## 2026-06-06 - Dynamic Empty States and Live Regions
 **Learning:** When filtering dynamic lists (like the move filter) yields no displayed results but the underlying dataset is non-empty, the resulting visual emptiness lacks clear affordance, and screen readers fail to announce the lack of results. This breaks user recovery flow.
 **Action:** Always render a distinct empty state UI with a clear call-to-action (like 'Clear Filter') when filtering yields no results. Apply `role="status"` and `aria-live="polite"` to the container so that screen readers announce the state automatically without focus loss.
+
+## 2026-06-07 - Inline Contextual Actions
+**Learning:** Providing inline contextual actions (like 'Copy' buttons) with immediate visual confirmation drastically reduces user friction and cognitive load, preventing them from needing to manually select and copy text. Screen reader users also benefit significantly when these actions are clearly labeled via `aria-label`.
+**Action:** Always provide inline actions with visual/textual feedback (e.g., '✅ Copied') that revert after a short delay (e.g., 2000ms), and ensure they are fully accessible via keyboard and screen readers.
