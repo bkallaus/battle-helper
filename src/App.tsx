@@ -7,13 +7,14 @@ import { defaultP1, defaultP2 } from './constants';
 import { allMoves } from './data';
 import { PokemonConfigPanel } from './components/PokemonConfigPanel';
 import { TypeChartPanel } from './components/TypeChartPanel';
+import { TypeFlashcardsPanel } from './components/TypeFlashcardsPanel';
 
 const App: React.FC = () => {
   const [p1Config, setP1Config] = useState<PokemonConfig>(defaultP1);
   const [p2Config, setP2Config] = useState<PokemonConfig>(defaultP2);
   const [p1Learnset, setP1Learnset] = useState<string[]>([]);
   const [moveFilter, setMoveFilter] = useState('');
-  const [activeTab, setActiveTab] = useState<'calc' | 'types'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'types' | 'flashcards'>('calc');
   const [team, setTeam] = useState<PokemonConfig[]>(() => {
     try {
       const saved = localStorage.getItem('vgc-team');
@@ -234,6 +235,7 @@ const App: React.FC = () => {
       <div className="tabs-container" role="tablist" aria-label="Main Navigation">
         <button className={`tab-btn ${activeTab === 'calc' ? 'active' : ''}`} onClick={() => setActiveTab('calc')} role="tab" aria-selected={activeTab === 'calc'}>Damage Calculator</button>
         <button className={`tab-btn ${activeTab === 'types' ? 'active' : ''}`} onClick={() => setActiveTab('types')} role="tab" aria-selected={activeTab === 'types'}>Type Chart</button>
+        <button className={`tab-btn ${activeTab === 'flashcards' ? 'active' : ''}`} onClick={() => setActiveTab('flashcards')} role="tab" aria-selected={activeTab === 'flashcards'}>Type Flashcards</button>
       </div>
 
       {activeTab === 'calc' && (
@@ -365,6 +367,10 @@ const App: React.FC = () => {
 
       {activeTab === 'types' && (
         <TypeChartPanel />
+      )}
+
+      {activeTab === 'flashcards' && (
+        <TypeFlashcardsPanel />
       )}
 
       {/* FAB and Drawer */}
