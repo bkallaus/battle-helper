@@ -9,6 +9,48 @@ import { PokemonConfigPanel } from './components/PokemonConfigPanel';
 import { TypeChartPanel } from './components/TypeChartPanel';
 import { TypeFlashcardsPanel } from './components/TypeFlashcardsPanel';
 
+const CopyButton = ({ text }: { text: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    if (copied) {
+      timeout = setTimeout(() => setCopied(false), 2000);
+    }
+    return () => clearTimeout(timeout);
+  }, [copied]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+    }).catch(() => {
+      // Ignore if clipboard copy fails
+    });
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      style={{
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        color: copied ? 'var(--hp-green)' : 'var(--text-muted)',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '2px 4px',
+        borderRadius: '4px',
+        transition: 'color 0.2s'
+      }}
+      aria-label={copied ? "Copied calculation" : "Copy calculation"}
+      title="Copy calculation"
+    >
+      {copied ? '✅' : '📋'}
+    </button>
+  );
+};
+
 const App: React.FC = () => {
   const [p1Config, setP1Config] = useState<PokemonConfig>(defaultP1);
   const [p2Config, setP2Config] = useState<PokemonConfig>(defaultP2);
@@ -343,6 +385,7 @@ const App: React.FC = () => {
                   }}>
                     {result.eff}
                   </span>
+                  <CopyButton text={result.desc} />
                 </div>
               </div>
               

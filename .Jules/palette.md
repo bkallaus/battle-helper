@@ -11,3 +11,7 @@
 ## 2026-06-06 - Dynamic Empty States and Live Regions
 **Learning:** When filtering dynamic lists (like the move filter) yields no displayed results but the underlying dataset is non-empty, the resulting visual emptiness lacks clear affordance, and screen readers fail to announce the lack of results. This breaks user recovery flow.
 **Action:** Always render a distinct empty state UI with a clear call-to-action (like 'Clear Filter') when filtering yields no results. Apply `role="status"` and `aria-live="polite"` to the container so that screen readers announce the state automatically without focus loss.
+
+## 2026-06-09 - Inline Action Feedback
+**Learning:** Users who repetitively copy data (like damage calculations) need immediate, clear, non-disruptive feedback that the action succeeded. Relying on implicit success creates uncertainty.
+**Action:** For inline actions like 'Copy', temporarily update the action's visual state (e.g., swapping a 'Clipboard' icon for a 'Checkmark' icon and adding an 'aria-label' update) instead of triggering a global toast or dialog.
