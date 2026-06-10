@@ -11,3 +11,7 @@
 ## 2026-06-06 - Dynamic Empty States and Live Regions
 **Learning:** When filtering dynamic lists (like the move filter) yields no displayed results but the underlying dataset is non-empty, the resulting visual emptiness lacks clear affordance, and screen readers fail to announce the lack of results. This breaks user recovery flow.
 **Action:** Always render a distinct empty state UI with a clear call-to-action (like 'Clear Filter') when filtering yields no results. Apply `role="status"` and `aria-live="polite"` to the container so that screen readers announce the state automatically without focus loss.
+
+## 2026-06-10 - Inline Visual Feedback for Actions
+**Learning:** Providing inline temporary visual feedback (e.g., '✅ Saved!') for actions like 'Save to Team' significantly reduces user friction. Users no longer need to manually check secondary locations (like a drawer) to confirm their action succeeded.
+**Action:** Add inline contextual actions with immediate temporary visual feedback that revert after a delay, ensuring they are fully accessible to screen readers via aria-live regions.
