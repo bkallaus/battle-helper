@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dex } from '@pkmn/dex';
 import { PokemonConfig } from '../types';
 import { allSpecies, allNatures } from '../data';
@@ -46,6 +46,7 @@ const statNames: Record<string, string> = {
 };
 
 export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: { title: string, config: PokemonConfig, setConfig: any, isP2: boolean, onSave?: () => void }) => {
+  const [isSaved, setIsSaved] = useState(false);
   const speciesInfo = Dex.species.get(config.species);
   const types = speciesInfo?.types || [];
   const baseStats = speciesInfo?.baseStats || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
@@ -53,6 +54,14 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
 
   const handleSpeciesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfig({ ...config, species: e.target.value, moves: [] });
+  };
+
+  const handleSave = () => {
+    if (onSave) {
+      onSave();
+      setIsSaved(true);
+      setTimeout(() => setIsSaved(false), 2000);
+    }
   };
 
   return (
@@ -185,18 +194,20 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
         {onSave && (
           <button
             type="button"
-            onClick={onSave}
+            onClick={handleSave}
+            aria-live="polite"
             style={{ 
               flex: 1, 
-              backgroundColor: 'var(--accent)', 
+              backgroundColor: isSaved ? 'var(--hp-green)' : 'var(--accent)',
               color: 'white', 
               border: 'none', 
               borderRadius: '6px', 
               fontWeight: 'bold', 
-              cursor: 'pointer' 
+              cursor: 'pointer',
+              transition: 'background-color 0.2s ease-in-out'
             }}
           >
-            Save to Team
+            {isSaved ? '✅ Saved!' : 'Save to Team'}
           </button>
         )}
       </div>
