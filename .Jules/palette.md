@@ -11,3 +11,6 @@
 ## 2026-06-06 - Dynamic Empty States and Live Regions
 **Learning:** When filtering dynamic lists (like the move filter) yields no displayed results but the underlying dataset is non-empty, the resulting visual emptiness lacks clear affordance, and screen readers fail to announce the lack of results. This breaks user recovery flow.
 **Action:** Always render a distinct empty state UI with a clear call-to-action (like 'Clear Filter') when filtering yields no results. Apply `role="status"` and `aria-live="polite"` to the container so that screen readers announce the state automatically without focus loss.
+## 2025-06-12 - Ephemeral Feedback State
+**Learning:** Adding a temporary "Saved!" visual state significantly reduces user uncertainty after clicking inline buttons, and implementing it via standard React `useState` and `setTimeout` is extremely effective without any new dependencies.
+**Action:** Default to providing a temporary visual confirmation state combined with `aria-live="polite"` for non-navigating actions like Save or Copy.
