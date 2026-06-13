@@ -146,7 +146,7 @@ export const TypeChartPanel = () => {
             placeholder="Type a Pokémon..."
           />
           {defendingSpecies && (
-            <button type="button" className="clear-input-btn" onClick={() => { setDefendingSpecies(''); }} aria-label="Clear">✕</button>
+            <button type="button" className="clear-input-btn" onClick={() => { setDefendingSpecies(''); }} aria-label="Clear defending species">✕</button>
           )}
         </div>
         <datalist id="species-list-typechart">
