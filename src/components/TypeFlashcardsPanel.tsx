@@ -67,24 +67,32 @@ export const TypeFlashcardsPanel: React.FC = () => {
         <div>Streak: <strong>{streak}</strong></div>
       </div>
 
-      <div style={{ margin: '2rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-        <div style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ fontWeight: 'bold', color: 'var(--hp-red)' }}>{attackingType}</span>
-          <span>attacks</span>
-          <span style={{ fontWeight: 'bold', color: 'var(--hp-green)' }}>{defendingType}</span>
+      <div style={{ margin: '2rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--hp-red)' }}>{attackingType}</span>
+          <span style={{ fontSize: '1.2rem', color: 'var(--text-muted)' }}>attacks</span>
+          <span style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--hp-green)' }}>{defendingType}</span>
         </div>
-        <div style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
+        <div style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>
           What is the damage multiplier?
         </div>
       </div>
 
       <div
-        style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '1rem',
+          maxWidth: '400px',
+          margin: '0 auto 2rem auto',
+          width: '100%'
+        }}
         role="group"
         aria-label="Effectiveness options"
       >
         <button
           className="stat-btn"
+          style={{ padding: '1.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}
           onClick={() => handleGuess(2)}
           aria-label="Guess 2 times effective"
         >
@@ -92,6 +100,7 @@ export const TypeFlashcardsPanel: React.FC = () => {
         </button>
         <button
           className="stat-btn"
+          style={{ padding: '1.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}
           onClick={() => handleGuess(1)}
           aria-label="Guess 1 times effective (neutral)"
         >
@@ -99,6 +108,7 @@ export const TypeFlashcardsPanel: React.FC = () => {
         </button>
         <button
           className="stat-btn"
+          style={{ padding: '1.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}
           onClick={() => handleGuess(0.5)}
           aria-label="Guess half effective"
         >
@@ -106,6 +116,7 @@ export const TypeFlashcardsPanel: React.FC = () => {
         </button>
         <button
           className="stat-btn"
+          style={{ padding: '1.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}
           onClick={() => handleGuess(0)}
           aria-label="Guess none (immune)"
         >
