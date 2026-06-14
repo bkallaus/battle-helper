@@ -25,6 +25,8 @@ const App: React.FC = () => {
   });
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -213,6 +215,13 @@ const App: React.FC = () => {
   }, [p1Config, p2Config, p1Learnset]);
 
 
+  const handleCopy = (desc: string, idx: number) => {
+    navigator.clipboard.writeText(desc);
+    setCopiedIndex(idx);
+    if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
+    copyTimeoutRef.current = setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
   const displayedResults = useMemo(() => {
     const coreMoves = (p1Config.moves || []).filter(m => m);
     
@@ -296,6 +305,24 @@ const App: React.FC = () => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <button
+                    onClick={() => handleCopy(result.desc, idx)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '1rem',
+                      color: copiedIndex === idx ? 'var(--hp-green)' : '#e0e0e0',
+                      padding: 0,
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}
+                    title={copiedIndex === idx ? "Copied!" : "Copy calculation"}
+                    aria-label={copiedIndex === idx ? "Copied!" : "Copy calculation"}
+                    aria-live="polite"
+                  >
+                    {copiedIndex === idx ? '✅' : '📋'}
+                  </button>
                   <button 
                     onClick={() => toggleCoreMove(result.move)}
                     style={{ 
