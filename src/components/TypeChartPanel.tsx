@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Dex } from '@pkmn/dex';
 import { TypeGrid } from './TypeGrid';
 import { allSpecies, allTypes } from '../data';
@@ -7,6 +7,7 @@ export const TypeChartPanel = () => {
   const [attackingType, setAttackingType] = useState<string>('Normal');
   const [defendingTypes, setDefendingTypes] = useState<string[]>(['Normal']);
   const [defendingSpecies, setDefendingSpecies] = useState<string>('');
+  const defendingSpeciesRef = useRef<HTMLInputElement>(null);
 
   const handleSpeciesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -144,9 +145,10 @@ export const TypeChartPanel = () => {
             value={defendingSpecies} 
             onChange={handleSpeciesChange} 
             placeholder="Type a Pokémon..."
+            ref={defendingSpeciesRef}
           />
           {defendingSpecies && (
-            <button type="button" className="clear-input-btn" onClick={() => { setDefendingSpecies(''); }} aria-label="Clear defending species">✕</button>
+            <button type="button" className="clear-input-btn" onClick={() => { setDefendingSpecies(''); defendingSpeciesRef.current?.focus(); }} aria-label="Clear defending species">✕</button>
           )}
         </div>
         <datalist id="species-list-typechart">

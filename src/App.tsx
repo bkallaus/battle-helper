@@ -25,6 +25,7 @@ const App: React.FC = () => {
   });
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
+  const moveFilterRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -255,9 +256,10 @@ const App: React.FC = () => {
               placeholder="Type ahead moves..." 
               value={moveFilter}
               onChange={e => setMoveFilter(e.target.value)}
+              ref={moveFilterRef}
             />
             {moveFilter && (
-              <button type="button" className="clear-input-btn" onClick={() => setMoveFilter('')} aria-label="Clear move filter">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => { setMoveFilter(''); moveFilterRef.current?.focus(); }} aria-label="Clear move filter">✕</button>
             )}
           </div>
         </div>
@@ -281,7 +283,7 @@ const App: React.FC = () => {
                 No moves match "{moveFilter}"
               </p>
               <button
-                onClick={() => setMoveFilter('')}
+                onClick={() => { setMoveFilter(''); moveFilterRef.current?.focus(); }}
                 className="stat-btn"
                 style={{ margin: '0 auto', padding: '8px 16px', maxWidth: '200px' }}
                 aria-label="Clear move filter to see all moves"
