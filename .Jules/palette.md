@@ -14,3 +14,6 @@
 ## 2025-06-12 - Ephemeral Feedback State
 **Learning:** Adding a temporary "Saved!" visual state significantly reduces user uncertainty after clicking inline buttons, and implementing it via standard React `useState` and `setTimeout` is extremely effective without any new dependencies.
 **Action:** Default to providing a temporary visual confirmation state combined with `aria-live="polite"` for non-navigating actions like Save or Copy.
+## 2024-05-18 - Managing Focus for Unmounting Conditionally Rendered Elements
+**Learning:** Found that when conditional UI elements like "Clear input" buttons (e.g. `clear-input-btn`) or modal/drawer close buttons unmount upon interaction, the DOM loses focus. The focus resets to `document.body`, severely degrading the experience for keyboard and screen reader users by disrupting navigation flow.
+**Action:** When using conditionally rendered UI elements (like a 'clear input' button) that unmount upon interaction, explicitly manage focus to prevent it from resetting to the document body. Attach a `useRef` to the associated persistent element (e.g., the text input or trigger button) and call `.focus()` on it within the unmounting element's event handler.
