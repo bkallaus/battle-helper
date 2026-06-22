@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [p2Config, setP2Config] = useState<PokemonConfig>(defaultP2);
   const [p1Learnset, setP1Learnset] = useState<string[]>([]);
   const [moveFilter, setMoveFilter] = useState('');
+  const moveFilterInputRef = useRef<HTMLInputElement>(null);
   const [activeTab, setActiveTab] = useState<'calc' | 'types' | 'flashcards'>('calc');
   const [team, setTeam] = useState<PokemonConfig[]>(() => {
     try {
@@ -250,6 +251,7 @@ const App: React.FC = () => {
           <h2 style={{ margin: 0 }}>P1 Offensive Estimates vs P2</h2>
           <div className="move-filter-container input-with-clear">
             <input 
+              ref={moveFilterInputRef}
               type="text" 
               aria-label="Filter moves"
               placeholder="Type ahead moves..." 
@@ -257,7 +259,7 @@ const App: React.FC = () => {
               onChange={e => setMoveFilter(e.target.value)}
             />
             {moveFilter && (
-              <button type="button" className="clear-input-btn" onClick={() => setMoveFilter('')} aria-label="Clear move filter">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => { setMoveFilter(''); setTimeout(() => moveFilterInputRef.current?.focus(), 0); }} aria-label="Clear move filter">✕</button>
             )}
           </div>
         </div>
