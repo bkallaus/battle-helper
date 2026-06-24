@@ -25,6 +25,7 @@ const App: React.FC = () => {
   });
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
+  const moveFilterRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -251,13 +252,17 @@ const App: React.FC = () => {
           <div className="move-filter-container input-with-clear">
             <input 
               type="text" 
+              ref={moveFilterRef}
               aria-label="Filter moves"
               placeholder="Type ahead moves..." 
               value={moveFilter}
               onChange={e => setMoveFilter(e.target.value)}
             />
             {moveFilter && (
-              <button type="button" className="clear-input-btn" onClick={() => setMoveFilter('')} aria-label="Clear move filter">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => {
+                setMoveFilter('');
+                moveFilterRef.current?.focus();
+              }} aria-label="Clear move filter">✕</button>
             )}
           </div>
         </div>
