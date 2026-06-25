@@ -45,8 +45,12 @@ const statNames: Record<string, string> = {
   spe: 'Spe'
 };
 
+import { useRef } from 'react';
+
 export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: { title: string, config: PokemonConfig, setConfig: any, isP2: boolean, onSave?: () => void }) => {
   const [showSavedFeedback, setShowSavedFeedback] = useState(false);
+  const speciesInputRef = useRef<HTMLInputElement>(null);
+  const natureInputRef = useRef<HTMLInputElement>(null);
   const speciesInfo = Dex.species.get(config.species);
   const types = speciesInfo?.types || [];
   const baseStats = speciesInfo?.baseStats || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
@@ -64,6 +68,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
         <div className="species-input-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <div className="input-with-clear" style={{ flex: 1, minWidth: '200px' }}>
             <input
+              ref={speciesInputRef}
               id={`species-input-${isP2 ? 'p2' : 'p1'}`}
               list={`species-list-${isP2 ? 'p2' : 'p1'}`}
               value={config.species}
@@ -72,7 +77,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
               placeholder="Type a Pokémon..."
             />
             {config.species && (
-              <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, species: '', moves: [] })} aria-label="Clear species">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => { setConfig({ ...config, species: '', moves: [] }); speciesInputRef.current?.focus(); }} aria-label="Clear species">✕</button>
             )}
           </div>
           <datalist id={`species-list-${isP2 ? 'p2' : 'p1'}`}>
@@ -92,6 +97,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
         <label htmlFor={`nature-input-${isP2 ? "p2" : "p1"}`}>Nature</label>
         <div className="input-with-clear">
           <input
+            ref={natureInputRef}
             id={`nature-input-${isP2 ? "p2" : "p1"}`}
             list={`nature-list-${isP2 ? "p2" : "p1"}`}
             value={config.nature}
@@ -100,7 +106,7 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
             placeholder="Type a Nature..."
           />
           {config.nature && (
-            <button type="button" className="clear-input-btn" onClick={() => setConfig({ ...config, nature: "Serious" })} aria-label="Clear nature">✕</button>
+            <button type="button" className="clear-input-btn" onClick={() => { setConfig({ ...config, nature: "Serious" }); natureInputRef.current?.focus(); }} aria-label="Clear nature">✕</button>
           )}
         </div>
         <datalist id={`nature-list-${isP2 ? "p2" : "p1"}`}>
