@@ -29,5 +29,14 @@
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "vite": "^8.0.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkallaus/battle-helper.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bkallaus/battle-helper/issues"
+  },
+  "homepage": "https://github.com/bkallaus/battle-helper#readme"
 }
