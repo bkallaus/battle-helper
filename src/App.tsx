@@ -25,6 +25,7 @@ const App: React.FC = () => {
   });
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
+  const moveFilterInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -250,6 +251,7 @@ const App: React.FC = () => {
           <h2 style={{ margin: 0 }}>P1 Offensive Estimates vs P2</h2>
           <div className="move-filter-container input-with-clear">
             <input 
+              ref={moveFilterInputRef}
               type="text" 
               aria-label="Filter moves"
               placeholder="Type ahead moves..." 
@@ -257,7 +259,7 @@ const App: React.FC = () => {
               onChange={e => setMoveFilter(e.target.value)}
             />
             {moveFilter && (
-              <button type="button" className="clear-input-btn" onClick={() => setMoveFilter('')} aria-label="Clear move filter">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => { setMoveFilter(''); moveFilterInputRef.current?.focus(); }} aria-label="Clear move filter">✕</button>
             )}
           </div>
         </div>
@@ -281,7 +283,7 @@ const App: React.FC = () => {
                 No moves match "{moveFilter}"
               </p>
               <button
-                onClick={() => setMoveFilter('')}
+                onClick={() => { setMoveFilter(''); moveFilterInputRef.current?.focus(); }}
                 className="stat-btn"
                 style={{ margin: '0 auto', padding: '8px 16px', maxWidth: '200px' }}
                 aria-label="Clear move filter to see all moves"
