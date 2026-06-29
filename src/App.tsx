@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [p2Config, setP2Config] = useState<PokemonConfig>(defaultP2);
   const [p1Learnset, setP1Learnset] = useState<string[]>([]);
   const [moveFilter, setMoveFilter] = useState('');
+  const moveFilterInputRef = useRef<HTMLInputElement>(null);
   const [activeTab, setActiveTab] = useState<'calc' | 'types' | 'flashcards'>('calc');
   const [team, setTeam] = useState<PokemonConfig[]>(() => {
     try {
@@ -255,9 +256,10 @@ const App: React.FC = () => {
               placeholder="Type ahead moves..." 
               value={moveFilter}
               onChange={e => setMoveFilter(e.target.value)}
+              ref={moveFilterInputRef}
             />
             {moveFilter && (
-              <button type="button" className="clear-input-btn" onClick={() => setMoveFilter('')} aria-label="Clear move filter">✕</button>
+              <button type="button" className="clear-input-btn" onClick={() => { setMoveFilter(''); moveFilterInputRef.current?.focus(); }} aria-label="Clear move filter">✕</button>
             )}
           </div>
         </div>
@@ -281,7 +283,7 @@ const App: React.FC = () => {
                 No moves match "{moveFilter}"
               </p>
               <button
-                onClick={() => setMoveFilter('')}
+                onClick={() => { setMoveFilter(''); moveFilterInputRef.current?.focus(); }}
                 className="stat-btn"
                 style={{ margin: '0 auto', padding: '8px 16px', maxWidth: '200px' }}
                 aria-label="Clear move filter to see all moves"
