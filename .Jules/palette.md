@@ -14,3 +14,7 @@
 ## 2025-06-12 - Ephemeral Feedback State
 **Learning:** Adding a temporary "Saved!" visual state significantly reduces user uncertainty after clicking inline buttons, and implementing it via standard React `useState` and `setTimeout` is extremely effective without any new dependencies.
 **Action:** Default to providing a temporary visual confirmation state combined with `aria-live="polite"` for non-navigating actions like Save or Copy.
+
+## 2023-10-27 - Input Focus Management and Keyboard Accessibility
+**Learning:** Attaching state-clearing actions to `onFocus` events on text inputs (like resetting form fields when focused) creates a severe accessibility issue and data loss for keyboard users navigating via Tab. Additionally, when conditionally rendered elements (like a "clear input" button) unmount upon interaction, focus gets reset to the document body, causing a poor experience.
+**Action:** Avoid destructive `onFocus` handlers. Rely on dedicated "clear" buttons instead. Explicitly manage focus back to persistent elements (e.g., attach a `useRef` to the text input and call `.focus()` on it within the unmounting element's click handler) to ensure a seamless keyboard navigation flow.
