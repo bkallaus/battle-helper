@@ -6,4 +6,6 @@ export interface PokemonConfig {
   boosts: { atk: number; def: number; spa: number; spd: number; spe: number };
   level: number;
   moves: string[];
+  teraType?: string;
+  isTerastallized?: boolean;
 }

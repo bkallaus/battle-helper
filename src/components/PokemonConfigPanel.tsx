@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Dex } from '@pkmn/dex';
 import { PokemonConfig } from '../types';
-import { allSpecies, allNatures } from '../data';
+import { allSpecies, allNatures, allTypes } from '../data';
 import { defaultEVs, defaultBoosts } from '../constants';
 
 const calculateStat = (statName: string, baseStat: number, level: number, iv: number, ev: number, boost: number, natureName: string) => {
@@ -113,6 +113,29 @@ export const PokemonConfigPanel = ({ title, config, setConfig, isP2, onSave }: {
             return <option key={n.name} value={n.name}>{label}</option>;
           })}
         </datalist>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor={`tera-type-input-${isP2 ? "p2" : "p1"}`}>Tera Type</label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <select
+            id={`tera-type-input-${isP2 ? "p2" : "p1"}`}
+            value={config.teraType || "Normal"}
+            onChange={(e) => setConfig({ ...config, teraType: e.target.value })}
+            style={{ flex: 1, padding: '8px', borderRadius: '6px', border: '1px solid var(--border)' }}
+          >
+            {allTypes.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', margin: 0 }}>
+            <input
+              type="checkbox"
+              checked={!!config.isTerastallized}
+              onChange={(e) => setConfig({ ...config, isTerastallized: e.target.checked })}
+              style={{ width: 'auto', margin: 0 }}
+            />
+            Terastallize
+          </label>
+        </div>
       </div>
 
       <details style={{ marginBottom: '16px', background: '#f3f4f5', padding: '8px', borderRadius: '8px', border: '1px solid var(--border)' }}>

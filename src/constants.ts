@@ -12,6 +12,8 @@ export const defaultP1: PokemonConfig = {
   boosts: { ...defaultBoosts },
   level: 50,
   moves: [],
+  teraType: "Normal",
+  isTerastallized: false,
 };
 
 export const defaultP2: PokemonConfig = {
@@ -22,4 +24,6 @@ export const defaultP2: PokemonConfig = {
   boosts: { ...defaultBoosts },
   level: 50,
   moves: [],
+  teraType: "Normal",
+  isTerastallized: false,
 };

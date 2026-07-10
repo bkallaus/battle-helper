@@ -114,6 +114,7 @@ const App: React.FC = () => {
         ivs: p1Config.ivs,
         evs: p1Config.evs,
         boosts: p1Config.boosts,
+        teraType: p1Config.isTerastallized ? (p1Config.teraType as any) : undefined,
       });
 
       const p2 = new Pokemon(9, p2Config.species, {
@@ -122,6 +123,7 @@ const App: React.FC = () => {
         ivs: p2Config.ivs,
         evs: p2Config.evs,
         boosts: p2Config.boosts,
+        teraType: p2Config.isTerastallized ? (p2Config.teraType as any) : undefined,
       });
 
       const p2Types = Dex.species.get(p2Config.species)?.types || [];
