@@ -26,6 +26,7 @@ const App: React.FC = () => {
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
   const moveFilterInputRef = useRef<HTMLInputElement>(null);
+  const teamFabRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -283,7 +284,7 @@ const App: React.FC = () => {
                 No moves match "{moveFilter}"
               </p>
               <button
-                onClick={() => setMoveFilter('')}
+                onClick={() => { setMoveFilter(''); moveFilterInputRef.current?.focus(); }}
                 className="stat-btn"
                 style={{ margin: '0 auto', padding: '8px 16px', maxWidth: '200px' }}
                 aria-label="Clear move filter to see all moves"
@@ -377,6 +378,7 @@ const App: React.FC = () => {
 
       {/* FAB and Drawer */}
       <button 
+        ref={teamFabRef}
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         aria-label="Toggle My Team drawer"
@@ -391,7 +393,7 @@ const App: React.FC = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
             <h3 style={{ margin: 0 }}>My Team</h3>
             <button 
-              onClick={() => setIsTeamFabOpen(false)} 
+              onClick={() => { setIsTeamFabOpen(false); teamFabRef.current?.focus(); }}
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
               aria-label="Close My Team drawer"
             >
@@ -421,6 +423,7 @@ const App: React.FC = () => {
                       onClick={() => {
                         setP1Config(pokemon);
                         setIsTeamFabOpen(false);
+                        teamFabRef.current?.focus();
                       }}
                     >
                       Select
