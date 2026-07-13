@@ -18,3 +18,11 @@
 ## 2026-07-08 - Focus Management for Unmounting Elements & Removing Destructive onFocus Actions
 **Learning:** Clearing values on `onFocus` causes severe accessibility and data-loss issues for keyboard users tabbing through inputs. Additionally, when a conditionally rendered element (like a 'clear input' button) is clicked and subsequently unmounts, focus is lost to the document body, breaking keyboard navigation flow.
 **Action:** Never bind destructive state-clearing actions to `onFocus`. Always explicitly manage focus by attaching a `useRef` to the associated persistent input element and invoking `.focus()` within the event handler of any conditionally rendered button that unmounts upon interaction.
+
+## 2025-07-25 - Inline 2-Step Confirmations for Destructive Actions
+**Learning:** For destructive actions that don't warrant the interruption of a full modal dialog (like removing a configured item from a transient list), instant deletion leads to frustrating data loss, while standard confirmation prompts feel too heavy.
+**Action:** Implement an inline 2-step confirmation by changing the button text/styling (e.g., to "Sure?" with a red background) on the first click, and requiring a second click to execute the deletion. Attach an `onBlur` event handler to reset the state back to default so accidental clicks can be safely abandoned by clicking anywhere else.
+
+## 2025-07-26 - Focusing Buttons for onBlur in WebKit
+**Learning:** When using `onBlur` on a `<button>` to cancel a state (like reverting a 2-step confirmation), the blur event might never fire in WebKit browsers (Safari) because clicking a button does not natively focus it.
+**Action:** Always call `e.currentTarget.focus()` inside the click handler when transitioning a button into a state that relies on a subsequent `onBlur` to escape.

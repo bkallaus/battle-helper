@@ -24,6 +24,7 @@ const App: React.FC = () => {
     }
   });
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
+  const [confirmDeleteIdx, setConfirmDeleteIdx] = useState<number | null>(null);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
   const moveFilterInputRef = useRef<HTMLInputElement>(null);
 
@@ -426,11 +427,21 @@ const App: React.FC = () => {
                       Select
                     </button>
                     <button 
-                      className="team-drawer-remove-btn"
-                      onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
-                      aria-label="Remove Pokémon from team"
+                      className={confirmDeleteIdx === idx ? "stat-btn clr-btn" : "team-drawer-remove-btn"}
+                      onClick={(e) => {
+                        if (confirmDeleteIdx === idx) {
+                          setTeam(prev => prev.filter((_, i) => i !== idx));
+                          setConfirmDeleteIdx(null);
+                        } else {
+                          setConfirmDeleteIdx(idx);
+                          // Force focus on the button so onBlur reliably fires in Safari/WebKit
+                          e.currentTarget.focus();
+                        }
+                      }}
+                      onBlur={() => setConfirmDeleteIdx(null)}
+                      aria-label={confirmDeleteIdx === idx ? "Confirm remove Pokémon from team" : "Remove Pokémon from team"}
                     >
-                      ✕
+                      {confirmDeleteIdx === idx ? 'Sure?' : '✕'}
                     </button>
                   </div>
                 </div>
