@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Dex } from '@pkmn/dex';
 import { TypeGrid } from './TypeGrid';
 import { allSpecies, allTypes } from '../data';
@@ -7,6 +7,7 @@ export const TypeChartPanel = () => {
   const [attackingType, setAttackingType] = useState<string>('Normal');
   const [defendingTypes, setDefendingTypes] = useState<string[]>(['Normal']);
   const [defendingSpecies, setDefendingSpecies] = useState<string>('');
+  const defendingSpeciesInputRef = useRef<HTMLInputElement>(null);
 
   const handleSpeciesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -139,6 +140,7 @@ export const TypeChartPanel = () => {
         <label htmlFor="defending-species-input">Search Defending Pokémon</label>
         <div className="input-with-clear" style={{ marginTop: '0.5rem' }}>
           <input 
+            ref={defendingSpeciesInputRef}
             id="defending-species-input"
             list="species-list-typechart" 
             value={defendingSpecies} 
@@ -146,7 +148,7 @@ export const TypeChartPanel = () => {
             placeholder="Type a Pokémon..."
           />
           {defendingSpecies && (
-            <button type="button" className="clear-input-btn" onClick={() => { setDefendingSpecies(''); }} aria-label="Clear defending species">✕</button>
+            <button type="button" className="clear-input-btn" onClick={() => { setDefendingSpecies(''); defendingSpeciesInputRef.current?.focus(); }} aria-label="Clear defending species">✕</button>
           )}
         </div>
         <datalist id="species-list-typechart">
@@ -154,7 +156,7 @@ export const TypeChartPanel = () => {
         </datalist>
       </div>
 
-      <div style={{ marginTop: '32px', padding: '24px', borderRadius: '16px', background: '#ffffff', border: `1px solid ${resultBorder}`, boxShadow: 'var(--surface-1-shadow)' }}>
+      <div role="status" aria-live="polite" style={{ marginTop: '32px', padding: '24px', borderRadius: '16px', background: '#ffffff', border: `1px solid ${resultBorder}`, boxShadow: 'var(--surface-1-shadow)' }}>
         <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           Result vs {defendingSpecies ? defendingSpecies : p2Types.length > 0 ? p2Types.join('/') : 'None'} 
           <span style={{ display: 'flex', gap: '0.25rem' }}>

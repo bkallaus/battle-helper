@@ -18,3 +18,11 @@
 ## 2026-07-08 - Focus Management for Unmounting Elements & Removing Destructive onFocus Actions
 **Learning:** Clearing values on `onFocus` causes severe accessibility and data-loss issues for keyboard users tabbing through inputs. Additionally, when a conditionally rendered element (like a 'clear input' button) is clicked and subsequently unmounts, focus is lost to the document body, breaking keyboard navigation flow.
 **Action:** Never bind destructive state-clearing actions to `onFocus`. Always explicitly manage focus by attaching a `useRef` to the associated persistent input element and invoking `.focus()` within the event handler of any conditionally rendered button that unmounts upon interaction.
+
+## 2024-08-15 - Focus Management for Unmounting clear buttons
+**Learning:** Adding focus management to clear buttons (e.g. `useRef` + `.focus()`) prevents focus loss to the document body when the button unmounts, keeping the interaction flow smooth.
+**Action:** Always attach a `useRef` to persistent inputs and invoke `.focus()` within the event handler of conditionally rendered buttons that unmount upon interaction.
+
+## 2024-08-15 - Live Regions for Type Matchup Results
+**Learning:** Wrapping dynamically updated calculation results (like the type matchup) in an `aria-live="polite"` container ensures screen readers automatically announce changes without requiring manual focus shifts.
+**Action:** Apply `role="status"` and `aria-live="polite"` to container elements wrapping dynamic calculations to improve context for screen reader users.
