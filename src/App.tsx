@@ -310,8 +310,8 @@ const App: React.FC = () => {
                       display: 'flex',
                       alignItems: 'center'
                     }}
-                    title={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
-                    aria-label={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    title={(p1Config.moves || []).includes(result.move) ? `Remove ${result.move} from Core Moves` : `Add ${result.move} to Core Moves`}
+                    aria-label={(p1Config.moves || []).includes(result.move) ? `Remove ${result.move} from Core Moves` : `Add ${result.move} to Core Moves`}
                     aria-pressed={(p1Config.moves || []).includes(result.move)}
                   >
                     {(p1Config.moves || []).includes(result.move) ? '★' : '☆'}
@@ -422,13 +422,14 @@ const App: React.FC = () => {
                         setP1Config(pokemon);
                         setIsTeamFabOpen(false);
                       }}
+                      aria-label={`Select ${pokemon.species || 'Pokémon'}`}
                     >
                       Select
                     </button>
                     <button 
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
-                      aria-label="Remove Pokémon from team"
+                      aria-label={`Remove ${pokemon.species || 'Pokémon'} from team`}
                     >
                       ✕
                     </button>

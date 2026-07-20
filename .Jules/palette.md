@@ -18,3 +18,7 @@
 ## 2026-07-08 - Focus Management for Unmounting Elements & Removing Destructive onFocus Actions
 **Learning:** Clearing values on `onFocus` causes severe accessibility and data-loss issues for keyboard users tabbing through inputs. Additionally, when a conditionally rendered element (like a 'clear input' button) is clicked and subsequently unmounts, focus is lost to the document body, breaking keyboard navigation flow.
 **Action:** Never bind destructive state-clearing actions to `onFocus`. Always explicitly manage focus by attaching a `useRef` to the associated persistent input element and invoking `.focus()` within the event handler of any conditionally rendered button that unmounts upon interaction.
+
+## 2024-05-18 - Contextual ARIA Labels and Live Regions
+**Learning:** Repetitive list items (like the "My Team" drawer and "Core Moves" list) often use visually identical buttons (e.g., "Select", "✕", "★"). Without contextual `aria-label`s, screen reader users cannot distinguish between them. Dynamic status areas (like type chart results) need `role="status"` and `aria-live="polite"` so screen readers announce changes automatically, otherwise users must manually re-focus the result area to hear updates.
+**Action:** Always append dynamic variables (like `${pokemon.species}` or `${result.move}`) to `aria-label`s within repetitive loops. Always wrap dynamic result displays in `role="status" aria-live="polite"` containers to ensure automatic screen reader announcements upon state changes.
