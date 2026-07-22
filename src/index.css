@@ -482,6 +482,23 @@ input:focus {
   transform: scale(1.05);
 }
 
+.team-fab-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--hp-red);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-dark);
+}
+
 .team-drawer {
   position: fixed;
   bottom: 90px;

@@ -37,9 +37,17 @@ const App: React.FC = () => {
       }
     };
 
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (isTeamFabOpen && event.key === 'Escape') {
+        setIsTeamFabOpen(false);
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscapeKey);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
     };
   }, [isTeamFabOpen]);
 
@@ -283,7 +291,7 @@ const App: React.FC = () => {
                 No moves match "{moveFilter}"
               </p>
               <button
-                onClick={() => setMoveFilter('')}
+                onClick={() => { setMoveFilter(''); moveFilterInputRef.current?.focus(); }}
                 className="stat-btn"
                 style={{ margin: '0 auto', padding: '8px 16px', maxWidth: '200px' }}
                 aria-label="Clear move filter to see all moves"
@@ -379,11 +387,16 @@ const App: React.FC = () => {
       <button 
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
-        aria-label="Toggle My Team drawer"
+        aria-label={`Toggle My Team drawer (${team.length} Pokémon)`}
         aria-expanded={isTeamFabOpen}
         aria-controls="team-drawer"
       >
         🛡️
+        {team.length > 0 && (
+          <span className="team-fab-badge">
+            {team.length}
+          </span>
+        )}
       </button>
 
       {isTeamFabOpen && (
