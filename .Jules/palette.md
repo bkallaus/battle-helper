@@ -18,3 +18,6 @@
 ## 2026-07-08 - Focus Management for Unmounting Elements & Removing Destructive onFocus Actions
 **Learning:** Clearing values on `onFocus` causes severe accessibility and data-loss issues for keyboard users tabbing through inputs. Additionally, when a conditionally rendered element (like a 'clear input' button) is clicked and subsequently unmounts, focus is lost to the document body, breaking keyboard navigation flow.
 **Action:** Never bind destructive state-clearing actions to `onFocus`. Always explicitly manage focus by attaching a `useRef` to the associated persistent input element and invoking `.focus()` within the event handler of any conditionally rendered button that unmounts upon interaction.
+>> ## 2026-07-23 - Focus Management and SR Announcers
+**Learning:** Empty states with action buttons (like 'Clear Filter') that unmount upon interaction leave focus on the body. Similarly, type matchup results need to be proactively announced. Using aria-label dynamically for repetitive elements in lists provides rich screen-reader context without adding visual clutter.
+**Action:** When adding empty states or unmounting elements, always wire focus restoration back to the persistent input control. Wrap dynamically changing data blocks in `role='status' aria-live='polite'`. Provide unique aria-labels for lists containing repeating buttons.

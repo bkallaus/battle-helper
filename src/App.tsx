@@ -283,7 +283,7 @@ const App: React.FC = () => {
                 No moves match "{moveFilter}"
               </p>
               <button
-                onClick={() => setMoveFilter('')}
+                onClick={() => { setMoveFilter(''); moveFilterInputRef.current?.focus(); }}
                 className="stat-btn"
                 style={{ margin: '0 auto', padding: '8px 16px', maxWidth: '200px' }}
                 aria-label="Clear move filter to see all moves"
@@ -422,13 +422,14 @@ const App: React.FC = () => {
                         setP1Config(pokemon);
                         setIsTeamFabOpen(false);
                       }}
+                      aria-label={`Select ${pokemon.species || 'Unknown Pokémon'}`}
                     >
                       Select
                     </button>
                     <button 
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
-                      aria-label="Remove Pokémon from team"
+                      aria-label={`Remove ${pokemon.species || 'Unknown Pokémon'} from team`}
                     >
                       ✕
                     </button>
