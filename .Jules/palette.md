@@ -18,3 +18,7 @@
 ## 2026-07-08 - Focus Management for Unmounting Elements & Removing Destructive onFocus Actions
 **Learning:** Clearing values on `onFocus` causes severe accessibility and data-loss issues for keyboard users tabbing through inputs. Additionally, when a conditionally rendered element (like a 'clear input' button) is clicked and subsequently unmounts, focus is lost to the document body, breaking keyboard navigation flow.
 **Action:** Never bind destructive state-clearing actions to `onFocus`. Always explicitly manage focus by attaching a `useRef` to the associated persistent input element and invoking `.focus()` within the event handler of any conditionally rendered button that unmounts upon interaction.
+
+## 2024-06-25 - Copy Calculation Functionality Added
+**Learning:** Added an inline CopyCalcButton to the damage calculator to handle sharing calculations. Adding immediate ephemeral visual feedback ("✅ Copied") upon clicking significantly enhances the user experience and confidence without requiring toast notifications or context loss.
+**Action:** Used standard React state with `setTimeout` and `aria-live="polite"` to ensure accessibility and a clear UX flow for copy actions.

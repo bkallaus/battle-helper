@@ -421,6 +421,25 @@ input:focus {
   color: var(--text-muted);
 }
 
+.copy-btn {
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+  min-height: auto;
+}
+
+.copy-btn.copied {
+  background: var(--hp-green);
+  color: white;
+  border-color: var(--hp-green);
+}
+
 /* Utility classes for badges/chips */
 .type-chip {
   font-size: 12px;
