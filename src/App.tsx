@@ -9,6 +9,35 @@ import { PokemonConfigPanel } from './components/PokemonConfigPanel';
 import { TypeChartPanel } from './components/TypeChartPanel';
 import { TypeFlashcardsPanel } from './components/TypeFlashcardsPanel';
 
+const CopyCalcButton = ({ text }: { text: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    if (copied) {
+      timeout = setTimeout(() => setCopied(false), 2000);
+    }
+    return () => clearTimeout(timeout);
+  }, [copied]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+    });
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className={`stat-btn copy-btn ${copied ? 'copied' : ''}`}
+      aria-label="Copy calculation"
+      aria-live="polite"
+    >
+      {copied ? '✅ Copied' : '📋 Copy'}
+    </button>
+  );
+};
+
 const App: React.FC = () => {
   const [p1Config, setP1Config] = useState<PokemonConfig>(defaultP1);
   const [p2Config, setP2Config] = useState<PokemonConfig>(defaultP2);
@@ -345,6 +374,7 @@ const App: React.FC = () => {
                   }}>
                     {result.eff}
                   </span>
+                  <CopyCalcButton text={result.desc} />
                 </div>
               </div>
               
