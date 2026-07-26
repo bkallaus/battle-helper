@@ -22,3 +22,6 @@
 ## 2024-06-25 - Copy Calculation Functionality Added
 **Learning:** Added an inline CopyCalcButton to the damage calculator to handle sharing calculations. Adding immediate ephemeral visual feedback ("✅ Copied") upon clicking significantly enhances the user experience and confidence without requiring toast notifications or context loss.
 **Action:** Used standard React state with `setTimeout` and `aria-live="polite"` to ensure accessibility and a clear UX flow for copy actions.
+## 2025-02-24 - Accessible TypeChartPanel Results
+**Learning:** Dynamically updated results in TypeChartPanel were not announced by screen readers when users toggled types. Also, clearing the defending species input left keyboard users with focus loss.
+**Action:** Applied `role="status"` and `aria-live="polite"` to the result container. Managed focus with a `useRef` to restore focus to the input when the clear button unmounts upon interaction.

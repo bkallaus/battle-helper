@@ -156,7 +156,7 @@ export const TypeChartPanel = () => {
         </datalist>
       </div>
 
-      <div style={{ marginTop: '32px', padding: '24px', borderRadius: '16px', background: '#ffffff', border: `1px solid ${resultBorder}`, boxShadow: 'var(--surface-1-shadow)' }}>
+      <div role="status" aria-live="polite" style={{ marginTop: '32px', padding: '24px', borderRadius: '16px', background: '#ffffff', border: `1px solid ${resultBorder}`, boxShadow: 'var(--surface-1-shadow)' }}>
         <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           Result vs {defendingSpecies ? defendingSpecies : p2Types.length > 0 ? p2Types.join('/') : 'None'} 
           <span style={{ display: 'flex', gap: '0.25rem' }}>
