@@ -9,7 +9,7 @@ import { PokemonConfigPanel } from './components/PokemonConfigPanel';
 import { TypeChartPanel } from './components/TypeChartPanel';
 import { TypeFlashcardsPanel } from './components/TypeFlashcardsPanel';
 
-const CopyCalcButton = ({ text }: { text: string }) => {
+const CopyCalcButton = ({ text, moveName }: { text: string, moveName: string }) => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const CopyCalcButton = ({ text }: { text: string }) => {
     <button
       onClick={handleCopy}
       className={`stat-btn copy-btn ${copied ? 'copied' : ''}`}
-      aria-label="Copy calculation"
+      aria-label={`Copy calculation for ${moveName}`}
       aria-live="polite"
     >
       {copied ? '✅ Copied' : '📋 Copy'}
@@ -55,6 +55,7 @@ const App: React.FC = () => {
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
   const moveFilterInputRef = useRef<HTMLInputElement>(null);
+  const teamFabRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,9 +67,18 @@ const App: React.FC = () => {
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isTeamFabOpen && event.key === 'Escape') {
+        setIsTeamFabOpen(false);
+        teamFabRef.current?.focus();
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isTeamFabOpen]);
 
@@ -339,8 +349,8 @@ const App: React.FC = () => {
                       display: 'flex',
                       alignItems: 'center'
                     }}
-                    title={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
-                    aria-label={(p1Config.moves || []).includes(result.move) ? "Remove from Core Moves" : "Add to Core Moves"}
+                    title={(p1Config.moves || []).includes(result.move) ? `Remove ${result.move} from Core Moves` : `Add ${result.move} to Core Moves`}
+                    aria-label={(p1Config.moves || []).includes(result.move) ? `Remove ${result.move} from Core Moves` : `Add ${result.move} to Core Moves`}
                     aria-pressed={(p1Config.moves || []).includes(result.move)}
                   >
                     {(p1Config.moves || []).includes(result.move) ? '★' : '☆'}
@@ -374,7 +384,7 @@ const App: React.FC = () => {
                   }}>
                     {result.eff}
                   </span>
-                  <CopyCalcButton text={result.desc} />
+                  <CopyCalcButton text={result.desc} moveName={result.move} />
                 </div>
               </div>
               
@@ -407,6 +417,7 @@ const App: React.FC = () => {
 
       {/* FAB and Drawer */}
       <button 
+        ref={teamFabRef}
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         aria-label="Toggle My Team drawer"
@@ -452,13 +463,14 @@ const App: React.FC = () => {
                         setP1Config(pokemon);
                         setIsTeamFabOpen(false);
                       }}
+                      aria-label={`Select ${pokemon.species || 'Pokémon'}`}
                     >
                       Select
                     </button>
                     <button 
                       className="team-drawer-remove-btn"
                       onClick={() => setTeam(prev => prev.filter((_, i) => i !== idx))}
-                      aria-label="Remove Pokémon from team"
+                      aria-label={`Remove ${pokemon.species || 'Pokémon'} from team`}
                     >
                       ✕
                     </button>
