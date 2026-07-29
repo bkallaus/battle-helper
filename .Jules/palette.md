@@ -25,3 +25,7 @@
 ## 2025-02-24 - Accessible TypeChartPanel Results
 **Learning:** Dynamically updated results in TypeChartPanel were not announced by screen readers when users toggled types. Also, clearing the defending species input left keyboard users with focus loss.
 **Action:** Applied `role="status"` and `aria-live="polite"` to the result container. Managed focus with a `useRef` to restore focus to the input when the clear button unmounts upon interaction.
+
+## 2026-07-15 - Focus Management for Floating Elements
+**Learning:** When users open a floating component (like a Drawer or Modal) using a trigger element (like a Floating Action Button), closing the component via the Escape key or manual actions (like "Close" or "Select") leaves keyboard focus lost on the document body if not explicitly managed.
+**Action:** Always bind the `Escape` key to close modals/drawers and ensure focus is restored to the triggering element using a `useRef` and `.focus()` method when the floating component unmounts or closes.
