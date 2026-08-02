@@ -25,3 +25,6 @@
 ## 2025-02-24 - Accessible TypeChartPanel Results
 **Learning:** Dynamically updated results in TypeChartPanel were not announced by screen readers when users toggled types. Also, clearing the defending species input left keyboard users with focus loss.
 **Action:** Applied `role="status"` and `aria-live="polite"` to the result container. Managed focus with a `useRef` to restore focus to the input when the clear button unmounts upon interaction.
+## 2025-06-25 - Prevent Focus Stealing on Modal Dismiss
+**Learning:** When implementing accessible drawers or modals, unconditionally restoring focus to the trigger element (e.g., the FAB) when the modal closes can cause severe UX issues if the close was triggered by clicking *outside* the modal on another interactive element (like a text input). The browser focuses the new input, but the modal's cleanup code steals focus back, requiring the user to click twice.
+**Action:** When managing focus for temporary UI components, ensure focus is only restored to the trigger element on explicit dismiss actions (Escape key, internal close button, or clicking the trigger again). For outside clicks, allow the browser to naturally shift focus to the clicked element without interference.
