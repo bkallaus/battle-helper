@@ -54,6 +54,7 @@ const App: React.FC = () => {
   });
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
+  const teamFabRef = useRef<HTMLButtonElement>(null);
   const moveFilterInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -61,14 +62,22 @@ const App: React.FC = () => {
       if (isTeamFabOpen && teamDrawerRef.current && !teamDrawerRef.current.contains(event.target as Node)) {
         const target = event.target as Element;
         if (!target.closest('.team-fab')) {
-          setIsTeamFabOpen(false);
+          closeTeamDrawer(false);
         }
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isTeamFabOpen && event.key === 'Escape') {
+        closeTeamDrawer(true);
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isTeamFabOpen]);
 
@@ -79,6 +88,15 @@ const App: React.FC = () => {
   const handleSaveToTeam = () => {
     setTeam(prev => [...prev, { ...p1Config }]);
     setIsTeamFabOpen(true);
+  };
+
+  const closeTeamDrawer = (restoreFocus: boolean) => {
+    setIsTeamFabOpen(false);
+    if (restoreFocus) {
+      setTimeout(() => {
+        teamFabRef.current?.focus();
+      }, 50);
+    }
   };
 
   const toggleCoreMove = (moveName: string) => {
@@ -407,6 +425,7 @@ const App: React.FC = () => {
 
       {/* FAB and Drawer */}
       <button 
+        ref={teamFabRef}
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         aria-label="Toggle My Team drawer"
@@ -421,7 +440,7 @@ const App: React.FC = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
             <h3 style={{ margin: 0 }}>My Team</h3>
             <button 
-              onClick={() => setIsTeamFabOpen(false)} 
+              onClick={() => closeTeamDrawer(true)}
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
               aria-label="Close My Team drawer"
             >
@@ -450,7 +469,7 @@ const App: React.FC = () => {
                       className="team-drawer-item-btn"
                       onClick={() => {
                         setP1Config(pokemon);
-                        setIsTeamFabOpen(false);
+                        closeTeamDrawer(true);
                       }}
                     >
                       Select
