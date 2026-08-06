@@ -25,3 +25,7 @@
 ## 2025-02-24 - Accessible TypeChartPanel Results
 **Learning:** Dynamically updated results in TypeChartPanel were not announced by screen readers when users toggled types. Also, clearing the defending species input left keyboard users with focus loss.
 **Action:** Applied `role="status"` and `aria-live="polite"` to the result container. Managed focus with a `useRef` to restore focus to the input when the clear button unmounts upon interaction.
+
+## 2026-08-06 - Restore focus on custom modals/drawers
+**Learning:** When implementing temporary custom UI components (modals, drawers, FABs like the Team Drawer) that unmount upon closing, focus natively drops to `document.body`. This is highly inaccessible for keyboard-only users who trigger the element.
+**Action:** Always bind the `Escape` key and any explicit inner close/select buttons to restore focus to the triggering element using a `useRef` and a small `setTimeout` to ensure the component unmounts before focus is applied.
