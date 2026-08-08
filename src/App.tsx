@@ -55,6 +55,14 @@ const App: React.FC = () => {
   const [isTeamFabOpen, setIsTeamFabOpen] = useState(false);
   const teamDrawerRef = useRef<HTMLDivElement>(null);
   const moveFilterInputRef = useRef<HTMLInputElement>(null);
+  const fabRef = useRef<HTMLButtonElement>(null);
+
+  const closeTeamDrawer = () => {
+    setIsTeamFabOpen(false);
+    setTimeout(() => {
+      fabRef.current?.focus();
+    }, 50); // slight delay to ensure component unmounts before focus drops
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,9 +74,17 @@ const App: React.FC = () => {
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isTeamFabOpen && event.key === 'Escape') {
+        closeTeamDrawer();
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isTeamFabOpen]);
 
@@ -407,6 +423,7 @@ const App: React.FC = () => {
 
       {/* FAB and Drawer */}
       <button 
+        ref={fabRef}
         className="team-fab" 
         onClick={() => setIsTeamFabOpen(!isTeamFabOpen)}
         aria-label="Toggle My Team drawer"
@@ -421,7 +438,7 @@ const App: React.FC = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
             <h3 style={{ margin: 0 }}>My Team</h3>
             <button 
-              onClick={() => setIsTeamFabOpen(false)} 
+              onClick={closeTeamDrawer}
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--text-muted)' }}
               aria-label="Close My Team drawer"
             >
@@ -450,7 +467,7 @@ const App: React.FC = () => {
                       className="team-drawer-item-btn"
                       onClick={() => {
                         setP1Config(pokemon);
-                        setIsTeamFabOpen(false);
+                        closeTeamDrawer();
                       }}
                     >
                       Select
