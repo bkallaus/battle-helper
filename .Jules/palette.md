@@ -25,3 +25,7 @@
 ## 2025-02-24 - Accessible TypeChartPanel Results
 **Learning:** Dynamically updated results in TypeChartPanel were not announced by screen readers when users toggled types. Also, clearing the defending species input left keyboard users with focus loss.
 **Action:** Applied `role="status"` and `aria-live="polite"` to the result container. Managed focus with a `useRef` to restore focus to the input when the clear button unmounts upon interaction.
+
+## 2025-02-25 - Focus Management on Ephemeral Unmounting Components
+**Learning:** Found that when dynamically rendered components (like empty state clear buttons) unmount, or when overlays like the FAB drawer are closed (via Escape, internal actions, or close buttons), focus naturally falls back to the `document.body`. This creates a severe accessibility issue where keyboard users lose their place in the UI.
+**Action:** Consistently bind unmount or close actions of temporary UI elements (Drawers, Empty states) to explicitly restore focus. Use a `useRef` pointing to the triggering element (like the FAB or input) and explicitly call `.focus()` within a small `setTimeout` to ensure the component unmounts fully before restoring focus. Do not restore focus on 'outside click' events, to prevent focus-stealing issues.
